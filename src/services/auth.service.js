@@ -1,10 +1,13 @@
-import axios from 'axios'; // Importa la librería Axios
+import axios from 'axios';
+// *** CAMBIO CLAVE RN: Usamos AsyncStorage para persistencia en móvil ***
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // --- Configuración de la API ---
 // ¡IMPORTANTE! Reemplaza esta URL por la URL base real de tu backend
+// NOTA RN: 'localhost' no funciona en emuladores/dispositivos. Usa tu IP local o dominio.
 const API_BASE_URL = "http://localhost:7206/api/"; 
 
-// Crea una instancia de Axios con la URL base para simplificar futuras llamadas
+// Crea una instancia de Axios con la URL base
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -13,7 +16,7 @@ const api = axios.create({
 });
 
 const AUTH_ENDPOINTS = {
-    login: "auth/login",     // Rutas relativas a API_BASE_URL
+    login: "auth/login", 
     register: "auth/register"
 };
 // ------------------------------
@@ -22,45 +25,35 @@ class AuthService {
     
     /**
      * @method login
-     * Envía 'CorreoElectronico' y 'Clave' al servidor y almacena el 'Token'.
+     * Envía 'CorreoElectronico' y 'Clave' al servidor y almacena el 'Token' de forma asíncrona.
      * @param {string} correoElectronico 
      * @param {string} clave 
      * @returns {Promise<object>} Los datos de respuesta del servidor.
      */
     async login(correoElectronico, clave) {
         try {
-            // Mapeo directo a los campos del Login.
             const loginData = {
                 CorreoElectronico: correoElectronico, 
                 Clave: clave
             };
             
-            // Axios usa .post y envuelve los datos JSON automáticamente
             const response = await api.post(AUTH_ENDPOINTS.login, loginData);
-            
-            // La respuesta exitosa está en response.data.
-            const data = response.data; // data es el LoginResponseDTO { Token: "..." }
+            const data = response.data;
 
             if (data.token) {
-                // Almacena el token (o el objeto completo si incluye más datos)
-                localStorage.setItem("userToken", data.token);
-                // Si el backend devuelve más datos del usuario, puedes guardarlos:
-                // localStorage.setItem("userData", JSON.stringify(data.userData));
+                // *** CAMBIO CLAVE RN: AsyncStorage.setItem es asíncrono ***
+                await AsyncStorage.setItem("userToken", data.token);
             }
 
             return data;
 
         } catch (error) {
-            // Axios envuelve los errores de respuesta en error.response
             if (error.response) {
-                // El servidor respondió con un código de estado fuera de 2xx (ej: 401)
                 console.error("Error de login:", error.response.data);
-                // Lanza un error con el mensaje del backend o un mensaje por defecto
                 throw new Error(error.response.data.message || "Credenciales inválidas.");
             } else {
-                // Error de red, timeout, etc.
                 console.error("Error de red o configuración:", error.message);
-                throw new Error("No se pudo conectar con el servidor de autenticación.");
+                throw new Error("No se pudo conectar con el servidor de autenticación. Verifica la URL de la API.");
             }
         }
     }
@@ -73,10 +66,8 @@ class AuthService {
      */
     async register(userData) {
         try {
-            // Envía el objeto userData, Axios lo serializa a JSON
             const response = await api.post(AUTH_ENDPOINTS.register, userData);
-            
-            return response.data; // Mensaje de éxito
+            return response.data;
 
         } catch (error) {
             if (error.response) {
@@ -90,33 +81,35 @@ class AuthService {
 
     /**
      * @method logout
-     * Elimina el token del almacenamiento local para cerrar la sesión.
+     * Elimina el token del almacenamiento local de forma asíncrona.
      */
-    logout() {
-        localStorage.removeItem("userToken");
+    async logout() {
+        // *** CAMBIO CLAVE RN: AsyncStorage.removeItem es asíncrono ***
+        await AsyncStorage.removeItem("userToken");
     }
 
     /**
      * @method getCurrentToken
-     * Recupera el token del usuario actualmente logueado.
-     * @returns {string|null} El token JWT o null.
+     * Recupera el token del usuario actualmente logueado de forma asíncrona.
+     * @returns {Promise<string|null>} El token JWT o null.
      */
-    getCurrentToken() {
-        return localStorage.getItem("userToken");
+    async getCurrentToken() {
+        // *** CAMBIO CLAVE RN: AsyncStorage.getItem es asíncrono ***
+        return await AsyncStorage.getItem("userToken");
     }
 }
 
-export default new AuthService();
+const authService = new AuthService();
+export default authService;
 
-// --- Configuración Adicional de Axios (Recomendado) ---
-// Opcionalmente, puedes configurar un interceptor para adjuntar el token 
-// automáticamente a todas las peticiones que necesitan autenticación.
-
+// --- Configuración Adicional de Axios (Adaptado) ---
+// Interceptor para adjuntar el token automáticamente.
 api.interceptors.request.use(
-    config => {
-        const token = localStorage.getItem("userToken");
+    async config => {
+        // *** CAMBIO CLAVE RN: La obtención del token ahora es asíncrona ***
+        const token = await authService.getCurrentToken(); 
+        
         if (token) {
-            // Adjunta el token en el encabezado 'Authorization' como 'Bearer [token]'
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
