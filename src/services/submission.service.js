@@ -1,10 +1,10 @@
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../constant/api.config";
 
 export async function getSubmissionById(exerciseId) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/exercise/${exerciseId}/submission/user`, {
       headers: {
@@ -21,7 +21,7 @@ export async function getSubmissionById(exerciseId) {
 
 export async function getSubmissionByUserId(exerciseId, userId) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/exercise/${exerciseId}/submission/user/${userId}`, {
       headers: {
@@ -36,11 +36,9 @@ export async function getSubmissionByUserId(exerciseId, userId) {
   }
 }
 
-
-
 export async function getSubmissions(exerciseId) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/exercise/${exerciseId}/submission`, {
       headers: {
@@ -60,7 +58,7 @@ export const assignGrade = async (
   appUserId,
   grade,
 ) => {
-  const token = localStorage.getItem("token");
+  const token = await AsyncStorage.getItem("token");
 
   try {
     const response = await axios.put(

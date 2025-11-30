@@ -1,10 +1,11 @@
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../constant/api.config";
 
 export async function getExercisesByClassroom(classroomId) {
+  console.log(classroomId)
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/classroom/${classroomId}/exercise`, {
       headers: {
@@ -14,6 +15,7 @@ export async function getExercisesByClassroom(classroomId) {
 
     return response.data;
   } catch (error) {
+    console.log('hello')
     console.error("Error fetching exercises:", error);
     throw error;
   }
@@ -21,7 +23,7 @@ export async function getExercisesByClassroom(classroomId) {
 
 export async function getExercisesById(classroomId, exerciseId) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/classroom/${classroomId}/exercise/${exerciseId}`, {
       headers: {
@@ -38,7 +40,7 @@ export async function getExercisesById(classroomId, exerciseId) {
 
 export async function createExercise(classroomId, name, description, dueDate, testCases) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.post(
       `${API_URL}/api/classroom/${classroomId}/exercise`,
@@ -64,7 +66,6 @@ export async function createExercise(classroomId, name, description, dueDate, te
   }
 }
 
-
 export const updateExercise = async (
   classroomId,
   exerciseId,
@@ -73,7 +74,7 @@ export const updateExercise = async (
   dueDate,
   testCases
 ) => {
-  const token = localStorage.getItem("token");
+  const token = await AsyncStorage.getItem("token");
 
   try {
     const response = await axios.put(
@@ -102,7 +103,7 @@ export const updateExercise = async (
 
 export async function deleteExercise(classroomId, exerciseId) {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.delete(`${API_URL}/api/classroom/${classroomId}/exercise/${exerciseId}`, {
       headers: {
@@ -117,3 +118,4 @@ export async function deleteExercise(classroomId, exerciseId) {
   }
 }
 
+AsyncStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMDAyIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlByb2Zlc29yIiwibmJmIjoxNzY0MDMwOTUxLCJleHAiOjE3NjQwNjY5NTEsImlhdCI6MTc2NDAzMDk1MSwiaXNzIjoiUHJveWVjdG8iLCJhdWQiOiJVc3VhcmlvcyJ9.9uTCDv2QmeWdmk1bpG52ISZ3OSRLvBydB3jaee5lGQs")

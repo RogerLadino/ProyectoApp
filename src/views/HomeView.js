@@ -1,21 +1,30 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { BackHeader } from '../components';
+import { colors } from '../constant/theme';
 
 export default function HomeView() {
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text>Home View</Text>
+    <View style={styles.container}>
+      <BackHeader title="Inicio" />
+      <View style={styles.content}>
+        <Text style={styles.text}>Home View</Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.primary,
+  },
+  content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    color: colors.text,
   },
 });

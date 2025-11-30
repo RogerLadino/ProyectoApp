@@ -1,10 +1,10 @@
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../constant/api.config";
 
 export async function getUserProfile() {
   try {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
 
     const response = await axios.get(`${API_URL}/api/Auth/perfil`, {
       headers: {

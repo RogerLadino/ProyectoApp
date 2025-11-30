@@ -1,8 +1,8 @@
 import axios from 'axios'; // Importa la librería Axios
+import { API_URL } from "../constant/api.config";
 
 // --- Configuración de la API ---
-// ¡IMPORTANTE! Reemplaza esta URL por la URL base real de tu backend
-const API_BASE_URL = "http://localhost:7206/api/"; 
+const API_BASE_URL = `${API_URL}/api/`;
 
 // Crea una instancia de Axios con la URL base para simplificar futuras llamadas
 const api = axios.create({
