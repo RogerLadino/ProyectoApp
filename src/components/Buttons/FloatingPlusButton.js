@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { colors } from "../../constant/theme";
 import { Ionicons } from '@expo/vector-icons';
 
-export const FloatingPlusButton = ({ onPress }) => {
+const FloatingPlusButton = ({ onPress }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -42,3 +42,5 @@ const styles = StyleSheet.create({
     width: 'auto'
   },
 });
+
+export default FloatingPlusButton;

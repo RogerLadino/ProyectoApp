@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const ConfirmModal = ({ visible, onConfirm, onCancel, title, message }) => {
+const ConfirmModal = ({ visible, onConfirm, onCancel, title, message }) => {
   return (
     <Modal
       animationType="fade"
@@ -89,3 +89,5 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+export default ConfirmModal;

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing } from '../../constant/theme';
 
-export const ExerciseInfo = ({ dueDate, description }) => {
+const ExerciseInfo = ({ dueDate, description }) => {
   return (
     <View style={styles.container}>
       {dueDate && <Text style={styles.dateInfo}>{dueDate}</Text>}
@@ -28,3 +28,5 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
 });
+
+export default ExerciseInfo;

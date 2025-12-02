@@ -4,16 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useTestCases } from '../../hooks/useTestCases';
-import {
-  LoadingScreen,
-  ExerciseHeader,
-  ExerciseFormField,
-  TestCaseItem,
-  Button,
-  BackHeader,
-  DateTimeInput,
-  ConfirmModal,
-} from '../components';
+import LoadingScreen from '../../components/Common/LoadingScreen';
+import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
+import ExerciseFormField from '../../components/Exercise/ExerciseFormField';
+import TestCaseItem from '../../components/TestCase/TestCaseItem';
+import Button from '../../components/Common/Button';
+import BackHeader from '../../components/Navigation/BackHeader';
+import DateTimeInput from '../../components/Input/DateTimeInput';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
 import { colors, spacing } from '../../constant/theme';
 
 const EditExerciseView = () => {

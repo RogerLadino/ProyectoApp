@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const CodeStudentInfo = ({ student }) => {
+const CodeStudentInfo = ({ student }) => {
   return (
     <View style={styles.studentInfo}>
       <View style={styles.studentInfoRow}>
@@ -34,3 +34,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default CodeStudentInfo;

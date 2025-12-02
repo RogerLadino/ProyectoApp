@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export const StatCard = ({ label, value, icon, iconColor = '#F97E72' }) => {
+const StatCard = ({ label, value, icon, iconColor = '#F97E72' }) => {
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
@@ -48,3 +48,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default StatCard;

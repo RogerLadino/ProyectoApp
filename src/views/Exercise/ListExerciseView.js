@@ -4,19 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { getClassroomById } from '../../services/classroom.service';
 import { getUserProfile } from '../../services/user.service';
-import {
-  LoadingScreen,
-  ExerciseCard,
-  ClassroomCodeCard,
-  TopBar,
-  Sidebar,
-  ActionButton,
-  EmptyState,
-} from '../components';
+import LoadingScreen from '../../components/Common/LoadingScreen';
+import ExerciseCard from '../../components/Exercise/ExerciseCard';
+import ClassroomCodeCard from '../../components/Classroom/ClassroomCodeCard';
+import TopBar from '../../components/Navigation/TopBar';
+import Sidebar from '../../components/Navigation/Sidebar';
+import ActionButton from '../../components/Classroom/ActionButton';
+import EmptyState from '../../components/Common/EmptyState';
 import { colors, spacing } from '../../constant/theme';
-import { FloatingPlusButton } from '../../components/Buttons';
+import FloatingPlusButton from '../../components/Buttons/FloatingPlusButton';
 
-export const ListExerciseView = () => {
+const ListExerciseView = () => {
   const classroomId = 1; // Hardcoded for development
   const { exercises, loading: exerciseLoading, fetchExercisesByClassroom } = useExercise();
   const [classroom, setClassroom] = useState({});
@@ -55,8 +53,7 @@ export const ListExerciseView = () => {
   };
 
   const handleViewGrades = () => {
-    // Navegar a vista de calificaciones
-    console.log('Ver calificaciones');
+    navigation.navigate('Reports');
   };
 
   const handleEditClassroom = () => {

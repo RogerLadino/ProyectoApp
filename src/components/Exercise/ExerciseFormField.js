@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const ExerciseFormField = ({ 
+const ExerciseFormField = ({ 
   label, 
   value, 
   onChangeText, 
@@ -66,3 +66,5 @@ const styles = StyleSheet.create({
     minHeight: 100,
   },
 });
+
+export default ExerciseFormField;

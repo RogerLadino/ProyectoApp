@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { StatCard } from './StatCard.js'
+import StatCard from './StatCard.js'
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const StudentStatsCard = ({ grade, isResolved, isOnTime }) => {
+const StudentStatsCard = ({ grade, isResolved, isOnTime }) => {
   return (
     <View style={styles.statsContainer}>
       {/* Grade */}
@@ -60,3 +60,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default StudentStatsCard;

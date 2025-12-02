@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LanguageSelector } from './LanguageSelector';
+import LanguageSelector from './LanguageSelector';
 
-export const CodeEditor = ({ code, language, onCodeChange, onLanguageChange, onRunCode }) => {
+const CodeEditor = ({ code, language, onCodeChange, onLanguageChange, onRunCode }) => {
   return (
     <View style={styles.editorSection}>
       <View style={styles.editorHeader}>
@@ -68,3 +68,5 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
 });
+
+export default CodeEditor;

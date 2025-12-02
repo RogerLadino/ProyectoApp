@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const TopBar = ({ onMenuPress, title }) => {
+const TopBar = ({ onMenuPress, title }) => {
   return (
     <View style={styles.container}>
       <View style={styles.leftSection}>
@@ -60,3 +60,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default TopBar;

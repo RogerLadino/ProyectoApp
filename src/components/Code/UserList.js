@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export const UserList = ({ submissions, currentUserId, onSelectUser }) => {
+const UserList = ({ submissions, currentUserId, onSelectUser }) => {
   return (
     <ScrollView 
       horizontal 
@@ -60,3 +60,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default UserList;

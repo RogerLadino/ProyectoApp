@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { colors } from '../../constant/theme';
 
-export const ExerciseDescriptionTab = ({ description }) => {
+const ExerciseDescriptionTab = ({ description }) => {
   return (
     <ScrollView style={styles.tabItem}>
       <Text style={styles.exerciseDescription}>{description}</Text>
@@ -21,3 +21,5 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
 });
+
+export default ExerciseDescriptionTab;

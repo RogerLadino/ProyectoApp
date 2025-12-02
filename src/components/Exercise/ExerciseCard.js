@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const ExerciseCard = ({ 
+const ExerciseCard = ({ 
   exercise, 
   onPress 
 }) => {
@@ -56,3 +56,5 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
 });
+
+export default ExerciseCard;

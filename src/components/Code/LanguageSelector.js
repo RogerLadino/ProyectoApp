@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 
-export const LanguageSelector = ({ language, onLanguageChange, onRunCode }) => {
+const LanguageSelector = ({ language, onLanguageChange, onRunCode }) => {
   const languageOptions = [
     { label: 'Python', value: 'python' },
     { label: 'JavaScript', value: 'javascript' },
@@ -54,3 +54,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#363031',
   },
 });
+
+export default LanguageSelector;

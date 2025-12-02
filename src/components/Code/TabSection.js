@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export const TabSection = ({ activeTab, onTabChange, exerciseDescription, isProfessor }) => {
+const TabSection = ({ activeTab, onTabChange, exerciseDescription, isProfessor }) => {
   return (
     <View style={styles.tabsSection}>
       <View style={styles.tabsHeader}>
@@ -122,3 +122,5 @@ const styles = StyleSheet.create({
     color: '#FBFBFB',
   },
 });
+
+export default TabSection;

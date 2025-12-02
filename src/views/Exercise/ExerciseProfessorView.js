@@ -3,13 +3,11 @@ import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
-import {
-  LoadingScreen,
-  ProfessorHeader,
-  SubmissionTableHeader,
-  SubmissionRow,
-  BackHeader,
-} from '../components';
+import LoadingScreen from '../../components/Common/LoadingScreen';
+import ProfessorHeader from '../../components/Layout/ProfessorHeader';
+import SubmissionTableHeader from '../../components/Exercise/SubmissionTableHeader';
+import SubmissionRow from '../../components/Exercise/SubmissionRow';
+import BackHeader from '../../components/Navigation/BackHeader';
 import { colors, spacing } from '../../constant/theme';
 
 const ExerciseProfessorView = () => {

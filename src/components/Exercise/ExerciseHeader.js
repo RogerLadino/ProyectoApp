@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../constant/theme';
 
-export const ExerciseHeader = ({ title, icon = 'ellipse-outline' }) => {
+const ExerciseHeader = ({ title, icon = 'ellipse-outline' }) => {
   return (
     <View style={styles.header}>
       <Ionicons name={icon} size={24} color={colors.accent} />
@@ -25,3 +25,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default ExerciseHeader;

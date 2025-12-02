@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-export const Header = ({ title, showBack = false, rightButtons = [] }) => {
+const Header = ({ title, showBack = false, rightButtons = [] }) => {
   const navigation = useNavigation();
 
   return (
@@ -67,3 +67,5 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 });
+
+export default Header;

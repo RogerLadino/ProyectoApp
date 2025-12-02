@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getMyClassrooms } from '../../services/classroom.service';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose }) => {
   const [aulas, setAulas] = useState([]);
   const navigation = useNavigation();
   const slideAnim = React.useRef(new Animated.Value(-300)).current;
@@ -177,3 +177,5 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
 });
+
+export default Sidebar;

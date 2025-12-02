@@ -4,14 +4,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
 import { getUserProfile } from '../../services/user.service';
-import {
-  LoadingScreen,
-  ExerciseHeader,
-  ExerciseInfo,
-  StudentStatsCard,
-  Button,
-  BackHeader,
-} from '../components';
+import LoadingScreen from '../../components/Common/LoadingScreen';
+import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
+import ExerciseInfo from '../../components/Exercise/ExerciseInfo';
+import StudentStatsCard from '../../components/Exercise/StudentStatsCard';
+import Button from '../../components/Common/Button';
+import BackHeader from '../../components/Navigation/BackHeader';
 import { colors, spacing } from '../../constant/theme';
 
 const ExerciseStudentView = () => {

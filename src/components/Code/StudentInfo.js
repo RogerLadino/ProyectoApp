@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export const StudentInfo = ({ currentSubmission }) => {
+const StudentInfo = ({ currentSubmission }) => {
   return (
     <View style={styles.studentInfoRow}>
       <Ionicons name="ellipse" size={14} color="#F15152" />
@@ -28,3 +28,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default StudentInfo;

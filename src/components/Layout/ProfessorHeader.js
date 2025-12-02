@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const ProfessorHeader = ({ title, onEdit, onSave }) => {
+const ProfessorHeader = ({ title, onEdit, onSave }) => {
   return (
     <View style={styles.header}>
       <View style={styles.headerLeft}>
@@ -76,3 +76,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default ProfessorHeader;

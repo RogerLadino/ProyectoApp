@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const ConsoleOutput = ({ output, isResolved, isOnTime }) => {
+const ConsoleOutput = ({ output, isResolved, isOnTime }) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.consoleOutput}>
@@ -57,3 +57,5 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+export default ConsoleOutput;

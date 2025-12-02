@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { borderRadius, colors, spacing } from "../../constant/theme";
 
-export const ClassroomTitle = ({ name }) => {
+const ClassroomTitle = ({ name }) => {
   return (
     <View style={styles.header}>
       <Text style={[styles.classroomName]}>
@@ -29,3 +29,5 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+export default ClassroomTitle;

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing } from '../../constant/theme';
 
-export const SubmissionTableHeader = () => {
+const SubmissionTableHeader = () => {
   return (
     <View style={styles.tableHeader}>
       <Text style={[styles.tableHeaderText, { flex: 2 }]}>Nombre</Text>
@@ -31,3 +31,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default SubmissionTableHeader;

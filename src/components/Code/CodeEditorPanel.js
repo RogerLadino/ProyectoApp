@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const CodeEditorPanel = ({ 
+const CodeEditorPanel = ({ 
   code, 
   onCodeChange, 
   language, 
@@ -114,3 +114,5 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
 });
+
+export default CodeEditorPanel;

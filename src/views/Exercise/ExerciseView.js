@@ -3,7 +3,7 @@ import { getUserProfile } from '../../services/user.service';
 import ExerciseProfessorView from './ExerciseProfessorView';
 import ExerciseStudentView from './ExerciseStudentView';
 
-export const ExerciseView = () => {
+const ExerciseView = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -21,3 +21,5 @@ export const ExerciseView = () => {
     </>
   );
 };
+
+export default ExerciseView;

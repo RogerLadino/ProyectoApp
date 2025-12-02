@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const SubmissionRow = ({
+const SubmissionRow = ({
   submission,
   onGradeChange,
   onViewCode
@@ -129,3 +129,5 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 });
+
+export default SubmissionRow;

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const ClassroomCodeCard = ({ code }) => {
+const ClassroomCodeCard = ({ code }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Código</Text>
@@ -33,3 +33,5 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
 });
+
+export default ClassroomCodeCard;

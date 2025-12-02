@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const CodeProfessorStats = ({ 
+const CodeProfessorStats = ({ 
   isResolved, 
   attempts, 
   grade, 
@@ -93,3 +93,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+
+export default CodeProfessorStats;

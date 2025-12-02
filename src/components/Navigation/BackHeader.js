@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { colors, spacing } from '../../constant/theme';
 
-export const BackHeader = ({ title, onBackPress }) => {
+const BackHeader = ({ title, onBackPress }) => {
   const navigation = useNavigation();
 
   const handleBack = () => {
@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+export default BackHeader;

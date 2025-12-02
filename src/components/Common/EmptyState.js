@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const EmptyState = ({ icon = 'document-text-outline', message }) => {
+const EmptyState = ({ icon = 'document-text-outline', message }) => {
   return (
     <View style={styles.container}>
       <Ionicons name={icon} size={48} color={colors.textSecondary} />
@@ -24,3 +24,5 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
 });
+
+export default EmptyState;

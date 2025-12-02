@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { BackHeader } from '../components';
+import BackHeader from '../components/Navigation/BackHeader';
 import { colors } from '../constant/theme';
 
 export default function HomeView() {

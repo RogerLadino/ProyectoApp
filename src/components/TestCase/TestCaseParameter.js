@@ -7,7 +7,7 @@ import { colors, spacing, borderRadius } from '../../constant/theme';
 const tipos = ['int', 'string', 'float', 'boolean'];
 const data = tipos.map(t => ({ label: t, value: t }));
 
-export const TestCaseParameter = ({
+const TestCaseParameter = ({
   parameter,
   onTypeChange,
   onValueChange,
@@ -98,3 +98,5 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
 });
+
+export default TestCaseParameter;

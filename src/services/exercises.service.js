@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "../constant/api.config";
 
 export async function getExercisesByClassroom(classroomId) {
-  console.log(classroomId)
   try {
     const token = await AsyncStorage.getItem("token");
 
@@ -15,8 +14,6 @@ export async function getExercisesByClassroom(classroomId) {
 
     return response.data;
   } catch (error) {
-    console.log('hello')
-    console.error("Error fetching exercises:", error);
     throw error;
   }
 }
@@ -118,4 +115,4 @@ export async function deleteExercise(classroomId, exerciseId) {
   }
 }
 
-AsyncStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMDAyIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlByb2Zlc29yIiwibmJmIjoxNzY0MDMwOTUxLCJleHAiOjE3NjQwNjY5NTEsImlhdCI6MTc2NDAzMDk1MSwiaXNzIjoiUHJveWVjdG8iLCJhdWQiOiJVc3VhcmlvcyJ9.9uTCDv2QmeWdmk1bpG52ISZ3OSRLvBydB3jaee5lGQs")
+AsyncStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMDAyIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlByb2Zlc29yIiwibmJmIjoxNzY0NjM1OTI4LCJleHAiOjE3NjQ2NzE5MjcsImlhdCI6MTc2NDYzNTkyOCwiaXNzIjoiUHJveWVjdG8iLCJhdWQiOiJVc3VhcmlvcyJ9.ngQ6wjQnrcObIe4ijxXPRobYs7V7cTyuY9ncQ1HZ7Gw")

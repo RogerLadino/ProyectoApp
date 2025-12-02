@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
-import { TestCaseHeader } from './TestCaseHeader';
-import { TestCaseParameter } from './TestCaseParameter';
+import TestCaseHeader from './TestCaseHeader';
+import TestCaseParameter from './TestCaseParameter';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const tipos = ['int', 'string', 'float', 'boolean'];
 const data = tipos.map(t => ({ label: t, value: t }));
 
 
-export const TestCaseItem = ({
+const TestCaseItem = ({
   testCase,
   index,
   onUpdate,
@@ -168,3 +168,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
 });
+
+export default TestCaseItem;

@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
-export const DateTimeInput = ({ label, value, onChange, placeholder }) => {
+const DateTimeInput = ({ label, value, onChange, placeholder }) => {
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
 
@@ -155,3 +155,5 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
 });
+
+export default DateTimeInput;

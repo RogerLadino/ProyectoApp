@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const TabNavigator = ({ activeTab, onTabChange, tabs = ['ejercicio', 'consola'] }) => {
+const TabNavigator = ({ activeTab, onTabChange, tabs = ['ejercicio', 'consola'] }) => {
   return (
     <View style={styles.tabsHeader}>
       {tabs.map((tab) => (
@@ -44,3 +44,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default TabNavigator;

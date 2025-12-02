@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing } from '../../constant/theme';
 
-export const TestCaseHeader = ({ 
+const TestCaseHeader = ({ 
   testNumber, 
   functionName, 
   isOpen, 
@@ -68,3 +68,5 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
 });
+
+export default TestCaseHeader;

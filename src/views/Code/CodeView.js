@@ -3,17 +3,16 @@ import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import * as signalR from '@microsoft/signalr';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
-import { TopBar, Sidebar } from '../../components';
-import { 
-  UserList, 
-  StudentInfo, 
-  SubmissionStats, 
-  CodeEditor, 
-  TabSection 
-} from '../../components/Code';
+import TopBar from '../../components/Navigation/TopBar';
+import Sidebar from '../../components/Navigation/Sidebar';
+import UserList from '../../components/Code/UserList';
+import StudentInfo from '../../components/Code/StudentInfo';
+import SubmissionStats from '../../components/Code/SubmissionStats';
+import CodeEditor from '../../components/Code/CodeEditor';
+import TabSection from '../../components/Code/TabSection';
 import { API_URL } from '../../constant/api.config';
 
-export function CodeView() {
+const CodeView = () => {
   const [activeTab, setActiveTab] = useState('ejercicio');
   const [language, setLanguage] = useState('python');
   const [code, setCode] = useState('');

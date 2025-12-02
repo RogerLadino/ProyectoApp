@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export const SubmissionStats = ({ currentSubmission }) => {
+const SubmissionStats = ({ currentSubmission }) => {
   return (
     <View style={styles.statsRow}>
       <View style={styles.statItem}>
@@ -58,3 +58,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default SubmissionStats;

@@ -2,17 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Views
+// Views - Direct imports
 import HomeView from '../views/HomeView';
-import { CodeView } from '../views/Code';
-import { 
-  ExerciseView, 
-  ExerciseStudentView, 
-  ExerciseProfessorView, 
-  CreateExerciseView, 
-  EditExerciseView, 
-  ListExerciseView 
-} from '../views/Exercise';
+import ReportsView from '../views/Reports/ReportsView';
+import CodeView from '../views/Code/CodeView';
+import ExerciseView from '../views/Exercise/ExerciseView';
+import ExerciseStudentView from '../views/Exercise/ExerciseStudentView';
+import ExerciseProfessorView from '../views/Exercise/ExerciseProfessorView';
+import CreateExerciseView from '../views/Exercise/CreateExerciseView';
+import EditExerciseView from '../views/Exercise/EditExerciseView';
+import ListExerciseView from '../views/Exercise/ListExerciseView';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +57,10 @@ export default function Navigation() {
         <Stack.Screen 
           name="EditExercise" 
           component={EditExerciseView}
+        />
+        <Stack.Screen 
+          name="Reports" 
+          component={ReportsView}
         />
       </Stack.Navigator>
     </NavigationContainer>
