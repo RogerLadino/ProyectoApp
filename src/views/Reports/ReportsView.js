@@ -109,23 +109,42 @@ const ReportsView = () => {
                       {student.name}
                     </Text>
                   </View>
-                  {exercises.map(exercise => {
+                  {exercises.map((exercise, index) => {
                     const gradeData = getGradeForStudent(student.id, exercise.id);
+                    const isFirst = index === 0;
+                    const isLast = index === exercises.length - 1;
+                    const isSubmitted = gradeData?.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997';
+                    const isResolved = gradeData?.status === 1;
                     return (
                       <View key={`${student.id}-${exercise.id}`} style={styles.tableCell}>
                         {gradeData ? (
-                          <>
-                            <View style={styles.scoreWrapper}>
-                              <Text style={styles.scoreInput}>{gradeData.grade}</Text>
-                              <Text style={styles.scoreSuffix}>/100</Text>
+                          <View style={styles.cellContent}>
+                            <View style={[styles.subCell, isFirst && styles.subCellFirst, isLast && styles.subCellLast]}>
+                              <Text style={styles.gradeText}>
+                                {gradeData.grade}/100
+                              </Text>
                             </View>
-                            <View style={styles.statsIcons}>
-                              <Text style={styles.iconText}>✓</Text>
-                              {gradeData.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997' && (
-                                <Text style={styles.iconText}>⏱</Text>
-                              )}
+                            <View style={[
+                              styles.subCell, 
+                              isFirst && styles.subCellFirst, 
+                              isLast && styles.subCellLast,
+                              isSubmitted ? styles.subCellSuccess : styles.subCellError
+                            ]}>
+                              <Text style={[styles.statusText, isSubmitted ? styles.statusTextSuccess : styles.statusTextError]}>
+                                {isSubmitted ? 'Entregado' : 'No entregado'}
+                              </Text>
                             </View>
-                          </>
+                            <View style={[
+                              styles.subCell, 
+                              isFirst && styles.subCellFirst, 
+                              isLast && styles.subCellLast,
+                              isResolved ? styles.subCellSuccess : styles.subCellError
+                            ]}>
+                              <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
+                                {isResolved ? 'Resuelto' : 'No resuelto'}
+                              </Text>
+                            </View>
+                          </View>
                         ) : (
                           <Text style={styles.noDataText}>-</Text>
                         )}
@@ -174,42 +193,107 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   table: {
-    borderWidth: 1,
-    borderColor: colors.text,
     minWidth: '100%',
   },
   tableRow: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: colors.text,
+    marginBottom: spacing.sm,
+    gap: spacing.sm,
   },
   tableCell: {
-    minWidth: 150,
-    padding: spacing.md,
-    borderRightWidth: 1,
-    borderRightColor: colors.text,
-    justifyContent: 'center',
+    width: 280,
+    minWidth: 280,
+    maxWidth: 280,
+    padding: 0,
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    backgroundColor: colors.primary,
+    borderRadius: 6,
   },
   nameColumn: {
+    width: 200,
     minWidth: 200,
+    maxWidth: 200,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     gap: spacing.sm,
+    backgroundColor: colors.card,
+    borderRadius: 6,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   headerCell: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     gap: spacing.sm,
+    backgroundColor: colors.card,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
   },
   headerText: {
     ...typography.bodySmall,
     color: colors.text,
     fontWeight: '600',
+    textAlign: 'left',
   },
   cellText: {
     ...typography.bodySmall,
     color: colors.text,
+    textAlign: 'left',
+  },
+  cellContent: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: spacing.sm,
+    flexWrap: 'nowrap',
+    flex: 1,
+    width: '100%',
+  },
+  subCell: {
+    flex: 1,
+    backgroundColor: colors.card,
+    padding: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 50,
+  },
+  subCellSuccess: {
+    backgroundColor: 'rgba(50, 232, 117, 0.15)',
+  },
+  subCellError: {
+    backgroundColor: 'rgba(249, 126, 114, 0.15)',
+  },
+  subCellFirst: {
+    marginLeft: 0,
+  },
+  subCellLast: {
+    marginRight: 0,
+  },
+  gradeText: {
+    fontSize: 10,
+    color: colors.text,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  statusTextSuccess: {
+    color: '#32E875',
+  },
+  statusTextError: {
+    color: '#F97E72',
+  },
+  badgesContainer: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+    flexWrap: 'wrap',
   },
   exerciseDot: {
     width: 12,
@@ -225,34 +309,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: colors.accent,
     flexShrink: 0,
-  },
-  scoreWrapper: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: 2,
-    marginBottom: spacing.xs,
-  },
-  scoreInput: {
-    fontWeight: '500',
-    color: colors.text,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.text,
-    paddingBottom: 2,
-    minWidth: 25,
-    textAlign: 'center',
-  },
-  scoreSuffix: {
-    fontSize: 14,
-    color: colors.textSecondary,
-  },
-  statsIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  iconText: {
-    color: colors.text,
-    fontSize: 14,
   },
   noDataText: {
     color: colors.textSecondary,
