@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { ExerciseContext } from './ExerciseContext';
+import { useNotification } from '../NotificationContext';
 import {
   getExercisesByClassroom,
   getExercisesById,
@@ -14,6 +15,7 @@ export const ExerciseProvider = ({ children }) => {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { showSuccess, showError } = useNotification();
 
   const fetchExercisesByClassroom = useCallback(async (classroomId) => {
     try {
@@ -24,11 +26,12 @@ export const ExerciseProvider = ({ children }) => {
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al cargar los ejercicios');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   const fetchExerciseById = useCallback(async (classroomId, exerciseId) => {
     try {
@@ -40,11 +43,12 @@ export const ExerciseProvider = ({ children }) => {
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al cargar el ejercicio');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   const createNewExercise = useCallback(async (classroomId, name, description, dueDate, testCases) => {
     try {
@@ -52,9 +56,11 @@ export const ExerciseProvider = ({ children }) => {
       setError(null);
       const data = await createExercise(classroomId, name, description, dueDate, testCases);
       setExercises((prev) => [...prev, data]);
+      showSuccess('Ejercicio creado exitosamente');
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al crear el ejercicio');
       throw err;
     } finally {
       setLoading(false);
@@ -83,14 +89,16 @@ export const ExerciseProvider = ({ children }) => {
         prev.map((ex) => (ex.id === exerciseId ? updatedExercise : ex))
       );
       
+      showSuccess('Ejercicio actualizado exitosamente');
       return updatedExercise;
     } catch (err) {
       setError(err.message);
+      showError('Error al actualizar el ejercicio');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [currentExercise]);
+  }, [currentExercise, showSuccess, showError]);
 
   const removeExercise = useCallback(async (classroomId, exerciseId) => {
     try {
@@ -102,13 +110,15 @@ export const ExerciseProvider = ({ children }) => {
         setCurrentExercise(null);
         setCurrentExerciseId(null);
       }
+      showSuccess('Ejercicio eliminado exitosamente');
     } catch (err) {
       setError(err.message);
+      showError('Error al eliminar el ejercicio');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [currentExerciseId]);
+  }, [currentExerciseId, showSuccess, showError]);
 
   const clearCurrentExercise = useCallback(() => {
     setCurrentExercise(null);

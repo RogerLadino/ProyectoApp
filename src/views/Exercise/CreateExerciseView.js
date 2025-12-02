@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useTestCases } from '../../hooks/useTestCases';
+import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
 import ExerciseFormField from '../../components/Exercise/ExerciseFormField';
@@ -16,6 +17,7 @@ import { colors, spacing } from '../../constant/theme';
 const CreateExerciseView = () => {
   const classroomId = 1; // Hardcoded for development
   const { createNewExercise, loading } = useExercise();
+  const { showWarning } = useNotification();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaEntrega, setFechaEntrega] = useState('');
@@ -35,7 +37,7 @@ const CreateExerciseView = () => {
 
   const handleSubmit = async () => {
     if (!nombre || !descripcion || !fechaEntrega) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      showWarning('Por favor completa todos los campos');
       return;
     }
 
@@ -47,11 +49,9 @@ const CreateExerciseView = () => {
         fechaEntrega,
         getParsedTestCases()
       );
-      Alert.alert('Éxito', 'Ejercicio creado correctamente');
       navigation.goBack();
     } catch (error) {
       console.error('Error creating exercise:', error);
-      Alert.alert('Error', 'No se pudo crear el ejercicio');
     }
   };
 

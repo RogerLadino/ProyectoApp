@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useTestCases } from '../../hooks/useTestCases';
+import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
 import ExerciseFormField from '../../components/Exercise/ExerciseFormField';
@@ -18,6 +19,7 @@ const EditExerciseView = () => {
   const { exerciseId } = useRoute().params;
   const classroomId = 1; // Hardcoded for development
   const { fetchExerciseById, updateCurrentExercise, removeExercise, loading } = useExercise();
+  const { showWarning } = useNotification();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaEntrega, setFechaEntrega] = useState('');
@@ -50,7 +52,6 @@ const EditExerciseView = () => {
         setPruebas(testCases);
       } catch (error) {
         console.error('Error fetching exercise:', error);
-        Alert.alert('Error', 'No se pudo cargar el ejercicio');
       } finally {
         setIsLoading(false);
       }
@@ -61,7 +62,7 @@ const EditExerciseView = () => {
 
   const handleSubmit = async () => {
     if (!nombre || !descripcion || !fechaEntrega) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      showWarning('Por favor completa todos los campos');
       return;
     }
 
@@ -74,11 +75,9 @@ const EditExerciseView = () => {
         fechaEntrega,
         getParsedTestCases(parseInt(exerciseId))
       );
-      Alert.alert('Éxito', 'Ejercicio actualizado correctamente');
       navigation.goBack();
     } catch (error) {
       console.error('Error updating exercise:', error);
-      Alert.alert('Error', 'No se pudo actualizar el ejercicio');
     }
   };
 
@@ -86,11 +85,9 @@ const EditExerciseView = () => {
     setShowDeleteModal(false);
     try {
       await removeExercise(classroomId, exerciseId);
-      Alert.alert('Éxito', 'Ejercicio eliminado correctamente');
       navigation.navigate('ListExercise');
     } catch (error) {
       console.error('Error deleting exercise:', error);
-      Alert.alert('Error', 'No se pudo eliminar el ejercicio');
     }
   };
 

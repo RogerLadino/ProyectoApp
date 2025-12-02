@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { CodeContext } from './CodeContext';
+import { useNotification } from '../NotificationContext';
 import {
   getSubmissionById,
   getSubmissionByUserId,
@@ -13,6 +14,7 @@ export const CodeProvider = ({ children }) => {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { showSuccess, showError } = useNotification();
 
   const fetchSubmissionById = useCallback(async (exerciseId) => {
     try {
@@ -23,11 +25,12 @@ export const CodeProvider = ({ children }) => {
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al cargar la entrega');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   const fetchSubmissionByUserId = useCallback(async (exerciseId, userId) => {
     try {
@@ -38,11 +41,12 @@ export const CodeProvider = ({ children }) => {
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al cargar la entrega del usuario');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   const fetchSubmissions = useCallback(async (exerciseId) => {
     try {
@@ -53,11 +57,12 @@ export const CodeProvider = ({ children }) => {
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al cargar las entregas');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   const updateGrade = useCallback(async (exerciseId, appUserId, grade) => {
     try {
@@ -67,14 +72,16 @@ export const CodeProvider = ({ children }) => {
       setSubmissions((prev) =>
         prev.map((sub) => (sub.appUserId === appUserId ? { ...sub, grade } : sub))
       );
+      showSuccess('Nota actualizada exitosamente');
       return data;
     } catch (err) {
       setError(err.message);
+      showError('Error al actualizar la nota');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showSuccess, showError]);
 
   const clearCurrentSubmission = useCallback(() => {
     setCurrentSubmission(null);

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
+import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ProfessorHeader from '../../components/Layout/ProfessorHeader';
 import SubmissionTableHeader from '../../components/Exercise/SubmissionTableHeader';
@@ -17,6 +18,7 @@ const ExerciseProfessorView = () => {
   const classroomId = 1; // Hardcoded for development
   const { currentExercise, loading: exerciseLoading, fetchExerciseById } = useExercise();
   const { submissions, loading: submissionsLoading, fetchSubmissions, updateGrade, setCurrentUserId } = useCode();
+  const { showWarning } = useNotification();
   const [loading, setLoading] = useState(true);
   const [localSubmissions, setLocalSubmissions] = useState([]);
 
@@ -56,10 +58,8 @@ const ExerciseProfessorView = () => {
           await updateGrade(exerciseId, submission.appUserId, grade);
         }
       }
-      Alert.alert('Éxito', 'Notas actualizadas correctamente');
     } catch (error) {
       console.error('Error saving grades:', error);
-      Alert.alert('Error', 'No se pudieron guardar las notas');
     }
   };
 
