@@ -1,63 +1,85 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import StatCard from './StatCard.js'
-import { colors, spacing, borderRadius } from '../../constant/theme';
+import { View, Text, StyleSheet } from 'react-native';
+import { colors, spacing } from '../../constant/theme';
 
 const StudentStatsCard = ({ grade, isResolved, isOnTime }) => {
   return (
     <View style={styles.statsContainer}>
-      {/* Grade */}
-      <StatCard 
-        label="Nota" 
-        value={grade || 0}
-      />
+      {/* Grade Cell */}
+      <View style={styles.statCell}>
+        <Text style={styles.statLabel}>Nota</Text>
+        <Text style={styles.gradeText}>{grade || 0}/100</Text>
+      </View>
 
-      {/* Solved */}
-      <StatCard 
-        label="Resuelto" 
-        value={
-          <View style={styles.iconCircle}>
-            {isResolved ? (
-              <Ionicons name="checkmark" size={16} color={colors.success} />
-            ) : (
-              <Ionicons name="close" size={16} color={colors.warning} />
-            )}
-          </View>
-        }
-      />
+      {/* Resolved Status Cell */}
+      <View style={[
+        styles.statCell,
+        isResolved ? styles.cellSuccess : styles.cellError
+      ]}>
+        <Text style={styles.statLabel}>Resuelto</Text>
+        <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isResolved ? 'Resuelto' : 'No resuelto'}
+        </Text>
+      </View>
 
-      {/* On Time */}
-      <StatCard 
-        label="A tiempo" 
-        value={
-          <View style={styles.iconCircle}>
-            {isOnTime ? (
-              <Ionicons name="checkmark" size={16} color={colors.success} />
-            ) : (
-              <Ionicons name="time-outline" size={16} color={colors.accent} />
-            )}
-          </View>
-        }
-      />
+      {/* On Time Status Cell */}
+      <View style={[
+        styles.statCell,
+        isOnTime ? styles.cellSuccess : styles.cellError
+      ]}>
+        <Text style={styles.statLabel}>A tiempo</Text>
+        <Text style={[styles.statusText, isOnTime ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isOnTime ? 'A tiempo' : 'Fuera de tiempo'}
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   statsContainer: {
-    backgroundColor: colors.card,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
+    flexDirection: 'row',
+    gap: spacing.sm,
     marginBottom: spacing.lg,
   },
-  iconCircle: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+  statCell: {
+    flex: 1,
     backgroundColor: colors.card,
-    justifyContent: 'center',
+    padding: spacing.md,
+    borderRadius: 6,
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 80,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  gradeText: {
+    fontSize: 18,
+    color: colors.text,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  cellSuccess: {
+    backgroundColor: 'rgba(50, 232, 117, 0.15)',
+  },
+  cellError: {
+    backgroundColor: 'rgba(249, 126, 114, 0.15)',
+  },
+  statusText: {
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  statusTextSuccess: {
+    color: '#32E875',
+  },
+  statusTextError: {
+    color: '#F97E72',
   },
 });
 
