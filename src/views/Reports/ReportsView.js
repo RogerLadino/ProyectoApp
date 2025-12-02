@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getClassroomSubmissions } from '../services/reports.service';
-import BackHeader from '../components/Navigation/BackHeader';
-import LoadingScreen from '../components/Common/LoadingScreen';
-import { colors, spacing, typography } from '../constant/theme';
+import { getClassroomSubmissions } from '../../services/reports.service';
+import BackHeader from '../../components/Navigation/BackHeader';
+import LoadingScreen from '../../components/Common/LoadingScreen';
+import { colors, spacing, typography } from '../../constant/theme';
 
 const ReportsView = () => {
   const navigation = useNavigation();
