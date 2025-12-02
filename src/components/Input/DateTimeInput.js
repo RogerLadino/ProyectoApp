@@ -78,7 +78,12 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
   if (Platform.OS === 'web') {
     return (
       <View style={styles.container}>
-        {label && <Text style={styles.label}>{label}</Text>}
+        {label && (
+          <View style={styles.labelContainer}>
+            <Ionicons name="ellipse-outline" size={14} color={colors.accent} />
+            <Text style={styles.label}>{label}</Text>
+          </View>
+        )}
         <View style={styles.inputContainer}>
           <Ionicons name="calendar-outline" size={20} color={colors.text} />
           <input
@@ -105,7 +110,12 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
   // Para Mobile (iOS y Android)
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && (
+        <View style={styles.labelContainer}>
+          <Ionicons name="ellipse-outline" size={14} color={colors.accent} />
+          <Text style={styles.label}>{label}</Text>
+        </View>
+      )}
       
       <TouchableOpacity style={styles.inputContainer} onPress={handlePress}>
         <Ionicons name="calendar-outline" size={20} color={colors.text} />
@@ -129,22 +139,28 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.sm,
   },
   label: {
     fontSize: 14,
     color: colors.text,
     fontWeight: '600',
-    marginBottom: spacing.sm,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.sm,
+    backgroundColor: colors.card,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    borderRadius: 6,
     gap: spacing.sm,
+    minHeight: 50,
   },
   inputText: {
     fontSize: 14,

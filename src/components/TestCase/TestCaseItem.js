@@ -74,32 +74,32 @@ const TestCaseItem = ({
           {/* Debe retornar */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Debe retornar</Text>
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.dropdownText}
-              selectedTextStyle={styles.dropdownText}
-              inputSearchStyle={styles.dropdownText}
-              itemTextStyle={styles.dropdownText}
-              containerStyle={styles.dropdownContainer}
-              data={data}
-              labelField="label"
-              valueField="value"
-              placeholder="string"
-              value={returnValue}
-              onChange={item => {
-                setReturnValue(item.value);
-                onUpdateOutput(index, 'tipo', item.value);
-              }}
-            />
-            <TextInput
-              style={[styles.input, {
-                marginTop: spacing.sm
-              }]}
-              value={testCase.salida.valor}
-              onChangeText={(value) => onUpdateOutput(index, 'valor', value)}
-              placeholder="Valor esperado"
-              placeholderTextColor={colors.textSecondary}
-            />
+            <View style={styles.returnValueContainer}>
+              <Dropdown
+                style={styles.returnDropdown}
+                placeholderStyle={styles.dropdownText}
+                selectedTextStyle={styles.dropdownText}
+                inputSearchStyle={styles.dropdownText}
+                itemTextStyle={styles.dropdownText}
+                containerStyle={styles.dropdownContainer}
+                data={data}
+                labelField="label"
+                valueField="value"
+                placeholder="string"
+                value={returnValue}
+                onChange={item => {
+                  setReturnValue(item.value);
+                  onUpdateOutput(index, 'tipo', item.value);
+                }}
+              />
+              <TextInput
+                style={styles.returnInput}
+                value={testCase.salida.valor}
+                onChangeText={(value) => onUpdateOutput(index, 'valor', value)}
+                placeholder="Valor esperado"
+                placeholderTextColor={colors.textSecondary}
+              />
+            </View>
           </View>
         </View>
       )}
@@ -114,11 +114,13 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.card,
     padding: spacing.md,
-    borderBottomLeftRadius: borderRadius.md,
-    borderBottomRightRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    gap: spacing.md,
   },
   section: {
-    marginBottom: spacing.md,
+    marginBottom: spacing.sm,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: colors.text,
     fontWeight: '600',
     marginBottom: spacing.sm,
@@ -135,9 +137,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.primary,
     color: colors.text,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 6,
     fontSize: 14,
   },
   row: {
@@ -148,17 +150,17 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flex: 1,
     flexDirection: 'column',
-    borderRadius: borderRadius.sm,
+    borderRadius: 6,
     overflow: 'hidden',
-    height: 30,
+    height: 40,
   },
   dropdown: {
     width: '100%',
     backgroundColor: colors.primary,
-    paddingHorizontal: 8,
-    borderRadius: 2,
+    paddingHorizontal: spacing.sm,
+    borderRadius: 6,
     flex: 1,
-    height: 28
+    height: 40,
   },
   dropdownText: {
     fontSize: 14,
@@ -166,6 +168,29 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     backgroundColor: colors.primary,
+    borderRadius: 6,
+  },
+  returnValueContainer: {
+    flexDirection: 'column',
+    gap: spacing.sm,
+    width: '100%',
+  },
+  returnDropdown: {
+    width: '100%',
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: 6,
+    height: 40,
+  },
+  returnInput: {
+    width: '100%',
+    backgroundColor: colors.primary,
+    color: colors.text,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 6,
+    fontSize: 14,
   },
 });
 

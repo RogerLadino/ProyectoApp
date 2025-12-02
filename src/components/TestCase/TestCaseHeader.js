@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.card,
     padding: spacing.md,
+    paddingHorizontal: spacing.md,
     borderRadius: 6,
-    marginBottom: 10
+    marginBottom: spacing.sm,
   },
   leftSection: {
     flexDirection: 'row',

@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   testsSection: {
-    marginBottom: spacing.xs,
+    marginTop: spacing.md,
+    marginBottom: spacing.lg,
   },
   testsHeader: {
     flexDirection: 'row',
@@ -159,12 +160,13 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     color: colors.text,
     fontWeight: '600',
   },
   saveButton: {
     marginTop: spacing.lg,
+    marginBottom: spacing.xl,
   },
 });
 

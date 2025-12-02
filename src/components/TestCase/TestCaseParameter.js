@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
   dropdown: {
     width: '100%',
     backgroundColor: colors.primary,
-    paddingHorizontal: 8,
-    borderRadius: 2,
-    flex: 1,
-    height: 28
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: 6,
+    height: 40,
   },
   dropdownText: {
     fontSize: 14,
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     backgroundColor: colors.primary,
+    borderRadius: 6,
   },
   valueContainer: {
     width: '100%',
@@ -89,9 +90,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     color: colors.text,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 6,
     fontSize: 14,
   },
   deleteButton: {
