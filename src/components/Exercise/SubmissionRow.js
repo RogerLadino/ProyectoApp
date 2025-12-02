@@ -8,61 +8,62 @@ const SubmissionRow = ({
   onGradeChange,
   onViewCode
 }) => {
+  const isResolved = submission.status === 1;
+  const isOnTime = submission.submittedAt && submission.submittedAt !== '9999-12-31T23:59:59.997';
+
   return (
     <View style={styles.tableRow}>
-      {/* Student Name */}
-      <View style={[styles.tableCell, { flex: 2 }]}>
-        <Ionicons name="ellipse" size={12} color={colors.warning} />
+      {/* Student Name Cell */}
+      <View style={[styles.tableCell, styles.nameColumn]}>
+        <Ionicons name="ellipse" size={12} color={colors.accent} />
         <Text style={styles.studentName}>
           {submission.appUser.firstName} {submission.appUser.lastName}
         </Text>
       </View>
 
-      {/* Grade Input */}
-      <View style={[styles.tableCell, { flex: 1, flexDirection: 'column' }]}>
-        <TextInput
-          style={styles.gradeInput}
-          keyboardType="numeric"
-          value={submission.grade?.toString() || ''}
-          onChangeText={(value) => onGradeChange(submission.appUserId, value)}
-          maxLength={3}
-        />
-        <View
-          style={{
-            width: '50%',
-            height: 1,
-            backgroundColor: colors.text,
-            opacity: 0.5
-          }}
-        />
-        <Text style={styles.gradeText}>100</Text>
-      </View>
-
-      {/* Solved Status */}
-      <View style={[styles.tableCell, { flex: 0.8, justifyContent: 'center' }]}>
-        <View style={styles.iconCircle}>
-          {submission.status === 1 ? (
-            <Ionicons name="checkmark" size={14} color={colors.success} />
-          ) : (
-            <Ionicons name="close" size={14} color={colors.warning} />
-          )}
+      {/* Grade Cell */}
+      <View style={styles.tableCell}>
+        <View style={styles.gradeContainer}>
+          <TextInput
+            style={styles.gradeInput}
+            keyboardType="numeric"
+            value={submission.grade?.toString() || ''}
+            onChangeText={(value) => onGradeChange(submission.appUserId, value)}
+            maxLength={3}
+            placeholderTextColor={colors.textSecondary}
+            placeholder="0"
+          />
+          <Text style={styles.gradeText}>/100</Text>
         </View>
       </View>
 
-      {/* On Time Status */}
-      <View style={[styles.tableCell, { flex: 0.8, justifyContent: 'center' }]}>
-        <View style={styles.iconCircle}>
-          <Ionicons name="time-outline" size={14} color={colors.success} />
-        </View>
+      {/* Resolved Status Cell */}
+      <View style={[
+        styles.tableCell,
+        isResolved ? styles.cellSuccess : styles.cellError
+      ]}>
+        <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isResolved ? 'Resuelto' : 'No resuelto'}
+        </Text>
       </View>
 
-      {/* View Code Button */}
-      <View style={[styles.tableCell, { flex: 1 }]}>
+      {/* On Time Status Cell */}
+      <View style={[
+        styles.tableCell,
+        isOnTime ? styles.cellSuccess : styles.cellError
+      ]}>
+        <Text style={[styles.statusText, isOnTime ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isOnTime ? 'A tiempo' : 'Fuera de tiempo'}
+        </Text>
+      </View>
+
+      {/* View Code Button Cell */}
+      <View style={styles.tableCell}>
         <TouchableOpacity
           style={styles.codeButton}
           onPress={() => onViewCode(submission.appUserId)}
         >
-          <Ionicons name="code-slash" size={14} color={colors.text} />
+          <Ionicons name="code-slash" size={16} color={colors.text} />
         </TouchableOpacity>
       </View>
     </View>
@@ -72,23 +73,37 @@ const SubmissionRow = ({
 const styles = StyleSheet.create({
   tableRow: {
     flexDirection: 'row',
-    backgroundColor: colors.card,
-    paddingVertical: 12,
-    paddingHorizontal: spacing.sm,
-    borderRadius: 6,
     marginBottom: spacing.sm,
-    alignItems: 'center',
+    gap: spacing.sm,
   },
   tableCell: {
+    flex: 1,
+    backgroundColor: colors.card,
+    padding: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 50,
+  },
+  nameColumn: {
+    flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 4,
-    gap: 4,
+    justifyContent: 'flex-start',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
   },
   studentName: {
     color: colors.text,
     fontSize: 12,
     flex: 1,
+  },
+  gradeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
   },
   gradeInput: {
     backgroundColor: colors.primary,
@@ -99,34 +114,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     borderRadius: 4,
     fontSize: 12,
+    fontWeight: '600',
   },
   gradeText: {
     color: colors.text,
     fontSize: 12,
+    fontWeight: '600',
   },
-  iconCircle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  cellSuccess: {
+    backgroundColor: 'rgba(50, 232, 117, 0.15)',
+  },
+  cellError: {
+    backgroundColor: 'rgba(249, 126, 114, 0.15)',
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  statusTextSuccess: {
+    color: '#32E875',
+  },
+  statusTextError: {
+    color: '#F97E72',
   },
   codeButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primary,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     borderRadius: 100,
-    gap: 4,
     width: '100%',
-    height: '80%'
-  },
-  codeButtonText: {
-    color: colors.text,
-    fontSize: 10,
   },
 });
 

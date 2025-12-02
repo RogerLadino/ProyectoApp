@@ -5,11 +5,21 @@ import { colors, spacing } from '../../constant/theme';
 const SubmissionTableHeader = () => {
   return (
     <View style={styles.tableHeader}>
-      <Text style={[styles.tableHeaderText, { flex: 2 }]}>Nombre</Text>
-      <Text style={[styles.tableHeaderText, { flex: 1 }]}>Nota</Text>
-      <Text style={[styles.tableHeaderText, { flex: 0.8 }]}>Resuelto</Text>
-      <Text style={[styles.tableHeaderText, { flex: 0.8 }]}>A tiempo</Text>
-      <Text style={[styles.tableHeaderText, { flex: 1 }]}>Código</Text>
+      <View style={[styles.headerCell, styles.nameColumn]}>
+        <Text style={styles.headerText}>Nombre</Text>
+      </View>
+      <View style={styles.headerCell}>
+        <Text style={styles.headerText}>Nota</Text>
+      </View>
+      <View style={styles.headerCell}>
+        <Text style={styles.headerText}>Resuelto</Text>
+      </View>
+      <View style={styles.headerCell}>
+        <Text style={styles.headerText}>A tiempo</Text>
+      </View>
+      <View style={styles.headerCell}>
+        <Text style={styles.headerText}>Código</Text>
+      </View>
     </View>
   );
 };
@@ -17,14 +27,24 @@ const SubmissionTableHeader = () => {
 const styles = StyleSheet.create({
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: colors.card,
-    paddingVertical: 12,
-    borderRadius: 6,
     marginBottom: spacing.sm,
+    gap: spacing.sm,
   },
-  tableHeaderText: {
-    justifyContent: "flex-start",
-    alignContent: "flex-start",
+  headerCell: {
+    flex: 1,
+    backgroundColor: colors.card,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nameColumn: {
+    flex: 2,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  headerText: {
     color: colors.text,
     fontSize: 12,
     fontWeight: '600',
