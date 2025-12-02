@@ -20,8 +20,15 @@ const TestCaseItem = ({
   onUpdateParameter,
   onUpdateOutput,
 }) => {
-  const [returnValue, setReturnValue] = useState(null);
+  const [returnValue, setReturnValue] = useState(testCase.salida?.tipo || 'string');
   const [isOpen, setIsOpen] = useState(false);
+
+  // Sincronizar returnValue cuando testCase.salida.tipo cambia
+  React.useEffect(() => {
+    if (testCase.salida?.tipo) {
+      setReturnValue(testCase.salida.tipo);
+    }
+  }, [testCase.salida?.tipo]);
 
   return (
     <View style={styles.container}>
