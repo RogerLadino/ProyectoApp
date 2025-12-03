@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 import { registerStyles as styles } from '../Styles/RegisterStyles';
 
 export default function RegisterView() {
   const navigation = useNavigation();
+  const { register } = useAuth(); // Llamar useAuth aquí, al nivel del componente
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -27,12 +29,26 @@ export default function RegisterView() {
     setMessage(null);
 
     try {
-      // Simulación de registro
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Mapear los campos del formulario a lo que espera el backend
+      const registroData = {
+        primerNombre: formData.nombre1,
+        segundoNombre: formData.nombre2 || '',
+        primerApellido: formData.apellido1,
+        segundoApellido: formData.apellido2 || '',
+        correoElectronico: formData.email,
+        clave: formData.password,
+        rolId: parseInt(formData.rol) || 2 // 1=Profesor, 2=Alumno por defecto
+      };
+      
+      console.log('Datos de registro:', registroData);
+      await register(registroData);
+      
       setMessage({ type: 'success', text: '¡Registro exitoso! Serás redirigido al inicio de sesión.' });
       setTimeout(() => navigation.navigate('Login'), 2000);
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Ocurrió un error. Inténtalo de nuevo.' });
+      const errorMsg = error.response?.data?.detail || error.message || 'Ocurrió un error. Inténtalo de nuevo.';
+      setMessage({ type: 'danger', text: errorMsg });
+      console.error('Error en registro:', error);
     } finally {
       setLoading(false);
     }

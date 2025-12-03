@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 import { loginStyles as styles } from '../Styles/LoginStyles';
 
 export default function LoginView() {
   const navigation = useNavigation();
+  const { login } = useAuth();
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -18,12 +20,11 @@ export default function LoginView() {
     setLoading(true);
 
     try {
-      // Simulación de login
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await login(credentials.email, credentials.password);
       setMessage({ type: 'success', text: '¡Inicio de sesión exitoso!' });
-      setTimeout(() => navigation.navigate('Home'), 1500);
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Credenciales inválidas. Inténtalo de nuevo.' });
+      const errorMsg = error.message || 'Credenciales inválidas. Inténtalo de nuevo.';
+      setMessage({ type: 'danger', text: errorMsg });
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || "https://tu-api.com";
+const API_URL = "https://localhost:7206";
 
 export async function getUserProfile() {
   try {

@@ -18,6 +18,8 @@ export default function HomeView() {
     const fetchUserRole = async () => {
       try {
         const profile = await getUserProfile();
+        console.log('Perfil de usuario:', profile);
+        console.log('Rol del usuario:', profile.appRoleId);
         setUserRole(profile.appRoleId);
       } catch (error) {
         console.error("Error obteniendo rol del usuario:", error);
