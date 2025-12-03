@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error en login:', error);
-      // Mejorar mensaje de error
       if (error.response?.data?.detail) {
         throw new Error(error.response.data.detail);
       }
