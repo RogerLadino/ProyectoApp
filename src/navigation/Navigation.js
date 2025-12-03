@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../context/AuthContext';
 import AuthNavigator from './AuthNavigation';
 import HomeView from '../views/HomeView';
-import ListClassroomView from '../views/Classroom/ListClassroomView';
 import CreateClassroomView from '../views/Classroom/CreateClassroomView';
 import EditClassroomView from '../views/Classroom/EditClassroomView';
 
@@ -36,11 +35,6 @@ export default function Navigation() {
               name="Home" 
               component={HomeView} 
               options={{ title: 'Inicio' }}
-            />
-            <Stack.Screen 
-              name="ListClassroom" 
-              component={ListClassroomView} 
-              options={{ title: 'Mis Clases' }}
             />
             <Stack.Screen 
               name="CreateClassroom" 

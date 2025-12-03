@@ -17,7 +17,7 @@ export default function CreateClassroomView() {
       await classroomService.createClassroom({ name: nombre.trim() });
       pushAlert("success", "Clase creada exitosamente.");
       fetchClassrooms();
-      navigation.navigate("ListClassroom");
+      navigation.navigate("Home");
     } catch (error) {
       console.error(error);
       pushAlert("danger", "No se pudo crear la clase.");
@@ -45,7 +45,7 @@ export default function CreateClassroomView() {
 
           <TouchableOpacity
             style={styles.cancelButton}
-            onPress={() => navigation.navigate("ListClassroom")}
+            onPress={() => navigation.navigate("Home")}
           >
             <XCircleIcon size={20} color="#FBFBFB" />
             <Text style={styles.cancelText}>Cancelar</Text>

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ClassroomContext } from '../context/ClassroomProvider';
 import { useAuth } from '../context/AuthContext';
 import { BookOpenIcon, UserIcon } from 'react-native-heroicons/solid';
+import JoinClassForm from '../components/Classroom/JoinClassForm';
 
 export default function HomeView() {
   const { classrooms, fetchClassrooms } = useContext(ClassroomContext);
@@ -32,13 +33,9 @@ export default function HomeView() {
             <Text style={styles.buttonText}>Crear Clase</Text>
           </TouchableOpacity>
         )}
-        
-        <TouchableOpacity 
-          style={styles.manageButton}
-          onPress={() => navigation.navigate('ListClassroom')}
-        >
-          <Text style={styles.manageButtonText}>Gestionar Clases</Text>
-        </TouchableOpacity>
+
+        {/* Solo mostrar formulario de unirse si es alumno (appRoleId === 2) */}
+        {user?.appRoleId === 2 && <JoinClassForm />}
 
         {classrooms.length === 0 ? (
           <Text style={styles.empty}>No estás inscrito en ninguna clase.</Text>
@@ -94,19 +91,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#FBFBFB',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  manageButton: {
-    backgroundColor: '#F97E72',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  manageButtonText: {
     color: '#FBFBFB',
     fontSize: 16,
     fontWeight: '600',

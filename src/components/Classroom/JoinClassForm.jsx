@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 16,
     marginBottom: 16,
+    width: "100%",
   },
   inputContainer: {
     flexDirection: "row",
     gap: 8,
-    maxWidth: 400,
     width: "100%",
   },
   input: {
