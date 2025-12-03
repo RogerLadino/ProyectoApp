@@ -1,4 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as authService from '../services/auth.service';
+import { getUserProfile } from '../services/user.service';
 
 const AuthContext = createContext();
 
@@ -10,19 +13,26 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      // Aquí va tu lógica de autenticación con tu servicio
-      // Por ejemplo: const response = await authService.login(email, password);
-      setUser({ email });
+      const { token, user: userData } = await authService.login(email, password);
+      await AsyncStorage.setItem('token', token);
+      
+      // Obtener el perfil completo del usuario después del login
+      const profile = await getUserProfile();
+      setUser(profile);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error en login:', error);
+      if (error.response?.data?.detail) {
+        throw new Error(error.response.data.detail);
+      }
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await AsyncStorage.removeItem('token');
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -30,8 +40,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setLoading(true);
-      // Aquí va tu lógica de registro
-      // Por ejemplo: const response = await authService.register(userData);
+      await authService.register(userData);
     } catch (error) {
       console.error('Error en registro:', error);
       throw error;
