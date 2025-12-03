@@ -1,31 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { ClassroomContext } from '../context/ClassroomProvider';
+import { useAuth } from '../context/AuthContext';
 import { BookOpenIcon, UserIcon } from 'react-native-heroicons/solid';
-import { getUserProfile } from '../services/user.service';
 
 export default function HomeView() {
   const { classrooms, fetchClassrooms } = useContext(ClassroomContext);
+  const { user } = useAuth();
   const navigation = useNavigation();
-  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     fetchClassrooms();
-    
-    // Obtener rol del usuario
-    const fetchUserRole = async () => {
-      try {
-        const profile = await getUserProfile();
-        console.log('Perfil de usuario:', profile);
-        console.log('Rol del usuario:', profile.appRoleId);
-        setUserRole(profile.appRoleId);
-      } catch (error) {
-        console.error("Error obteniendo rol del usuario:", error);
-      }
-    };
-    fetchUserRole();
   }, []);
 
   return (
@@ -37,7 +24,7 @@ export default function HomeView() {
         </View>
         
         {/* Solo mostrar botón Crear Clase si es profesor (appRoleId === 1) */}
-        {userRole === 1 && (
+        {user?.appRoleId === 1 && (
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('CreateClassroom')}

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as authService from '../services/auth.service';
+import { getUserProfile } from '../services/user.service';
 
 const AuthContext = createContext();
 
@@ -14,7 +15,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const { token, user: userData } = await authService.login(email, password);
       await AsyncStorage.setItem('token', token);
-      setUser(userData);
+      
+      // Obtener el perfil completo del usuario después del login
+      const profile = await getUserProfile();
+      setUser(profile);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error en login:', error);
