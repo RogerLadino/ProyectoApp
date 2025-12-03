@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,6 +7,12 @@ import { ClassroomContext } from '../context/ClassroomProvider';
 import { useAuth } from '../context/AuthContext';
 import { BookOpenIcon, UserIcon } from 'react-native-heroicons/solid';
 import JoinClassForm from '../components/Classroom/JoinClassForm';
+=======
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import BackHeader from '../components/Navigation/BackHeader';
+import { colors } from '../constant/theme';
+>>>>>>> feature/exercises
 
 export default function HomeView() {
   const { classrooms, fetchClassrooms } = useContext(ClassroomContext);
@@ -17,6 +24,7 @@ export default function HomeView() {
   }, []);
 
   return (
+<<<<<<< HEAD
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.titleContainer}>
@@ -52,12 +60,21 @@ export default function HomeView() {
         )}
       </ScrollView>
     </SafeAreaView>
+=======
+    <View style={styles.container}>
+      <BackHeader title="Inicio" />
+      <View style={styles.content}>
+        <Text style={styles.text}>Home View</Text>
+      </View>
+    </View>
+>>>>>>> feature/exercises
   );
 }
 
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
+<<<<<<< HEAD
     backgroundColor: '#231F20',
   },
   container: {
@@ -68,6 +85,12 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+=======
+    backgroundColor: colors.primary,
+  },
+  content: {
+    flex: 1,
+>>>>>>> feature/exercises
     justifyContent: 'center',
     gap: 12,
     marginBottom: 20,
@@ -90,6 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: 'center',
   },
+<<<<<<< HEAD
   buttonText: {
     color: '#FBFBFB',
     fontSize: 16,
@@ -126,5 +150,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#FBFBFB',
     opacity: 0.8,
+=======
+  text: {
+    color: colors.text,
+>>>>>>> feature/exercises
   },
 });
