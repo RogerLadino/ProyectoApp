@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
-import { getClassroomById } from '../../services/classroom.service';
+import { ClassroomContext } from '../../context/ClassroomProvider';
+import { getClassroomById, deleteClassroom } from '../../services/classroom.service';
 import { getUserProfile } from '../../services/user.service';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ExerciseCard from '../../components/Exercise/ExerciseCard';
+import ClassroomInfoCard from '../../components/Classroom/ClassroomInfoCard';
 import ClassroomCodeCard from '../../components/Classroom/ClassroomCodeCard';
 import TopBar from '../../components/Navigation/TopBar';
 import Sidebar from '../../components/Navigation/Sidebar';
 import ActionButton from '../../components/Classroom/ActionButton';
 import EmptyState from '../../components/Common/EmptyState';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
 import { colors, spacing } from '../../constant/theme';
-import FloatingPlusButton from '../../components/Buttons/FloatingPlusButton';
 
 const ListExerciseView = () => {
-  const classroomId = 1; // Hardcoded for development
   const { exercises, loading: exerciseLoading, fetchExercisesByClassroom } = useExercise();
-  const [classroom, setClassroom] = useState({});
+  const { currentClassroomId, currentClassroom, fetchClassrooms, pushAlert } = useContext(ClassroomContext);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchExercisesByClassroom(classroomId);
-        const fetchClassroom = await getClassroomById(classroomId);
+        const classroomId = currentClassroomId || currentClassroom?.id;
+        if (classroomId) {
+          await fetchExercisesByClassroom(classroomId);
+        }
         const fetchUser = await getUserProfile();
-
-        setClassroom(fetchClassroom);
         setUser(fetchUser);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -40,7 +42,7 @@ const ListExerciseView = () => {
     };
 
     fetchData();
-  }, [classroomId]);
+  }, [currentClassroomId, currentClassroom]);
 
   const isProfessor = user.appRoleId === 1;
 
@@ -57,8 +59,25 @@ const ListExerciseView = () => {
   };
 
   const handleEditClassroom = () => {
-    // Navegar a vista de editar clase
-    console.log('Editar clase');
+    navigation.navigate('EditClassroom', { classroomId: currentClassroom.id });
+  };
+
+  const handleDeleteClassroom = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteClassroom = async () => {
+    try {
+      await deleteClassroom(currentClassroom.id);
+      pushAlert('success', 'Clase eliminada correctamente.');
+      await fetchClassrooms();
+      setShowDeleteModal(false);
+      navigation.navigate('ClassroomList');
+    } catch (error) {
+      console.error('Error deleting classroom:', error);
+      pushAlert('danger', 'No se pudo eliminar la clase.');
+      setShowDeleteModal(false);
+    }
   };
 
   if (loading) {
@@ -70,7 +89,7 @@ const ListExerciseView = () => {
       {/* TopBar */}
       <TopBar
         onMenuPress={() => setSidebarOpen(true)}
-        title={classroom.name}
+        title={currentClassroom?.name || 'Clase'}
       />
 
       {/* Sidebar */}
@@ -80,22 +99,45 @@ const ListExerciseView = () => {
       />
 
       <ScrollView style={styles.content}>
-        {/* Código de clase (solo profesor) */}
+        {/* Información de clase (solo profesor) */}
         {isProfessor && (
-          <View style={styles.codeSection}>
-            <ClassroomCodeCard code={classroom.code} />
-
-            {/* Botones de acción (solo profesor) */}
+          <View style={styles.classroomSection}>
+            <ClassroomInfoCard 
+              className={currentClassroom?.name || 'Nombre de la clase'}
+              teacherName={currentClassroom?.teacherName || 'Nombre del profesor'}
+            />
+            
+            {/* Código de clase */}
+            <ClassroomCodeCard code={currentClassroom?.code || '------'} />
+            
+            {/* Botones de gestión de clase */}
             <View style={styles.actionButtons}>
+              <ActionButton
+                icon="pencil"
+                label="Editar clase"
+                onPress={handleEditClassroom}
+              />
+              <ActionButton
+                icon="trash"
+                label="Eliminar clase"
+                onPress={handleDeleteClassroom}
+              />
+            </View>
+
+            {/* Línea divisora */}
+            <View style={styles.divider} />
+
+            {/* Botones de acciones de ejercicios */}
+            <View style={styles.actionButtons}>
+              <ActionButton
+                icon="add-circle"
+                label="Nuevo ejercicio"
+                onPress={handleCreateExercise}
+              />
               <ActionButton
                 icon="bar-chart"
                 label="Calificaciones"
                 onPress={handleViewGrades}
-              />
-              <ActionButton
-                icon="pencil"
-                label="Editar Clase"
-                onPress={handleEditClassroom}
               />
             </View>
           </View>
@@ -119,7 +161,15 @@ const ListExerciseView = () => {
           )}
         </View>
       </ScrollView>
-      <FloatingPlusButton onPress={handleCreateExercise} />
+
+      {/* Modal de confirmación para eliminar clase */}
+      <ConfirmModal
+        visible={showDeleteModal}
+        title="Eliminar clase"
+        message="¿Estás seguro de que deseas eliminar esta clase? Esta acción no se puede deshacer."
+        onConfirm={confirmDeleteClassroom}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </View>
   );
 };
@@ -135,6 +185,14 @@ const styles = StyleSheet.create({
   },
   codeSection: {
     marginBottom: spacing.sm,
+  },
+  classroomSection: {
+    marginBottom: spacing.md,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: colors.card,
+    marginVertical: spacing.md,
   },
   actionButtons: {
     flexDirection: 'row',

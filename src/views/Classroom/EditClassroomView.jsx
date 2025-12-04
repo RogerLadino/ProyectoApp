@@ -41,7 +41,7 @@ export default function EditClassroomView() {
       await classroomService.updateClassroom(classroomId, { name: nombre.trim() });
       pushAlert("success", "Clase actualizada correctamente.");
       await fetchClassrooms();
-      navigation.navigate("ClassroomList");
+      navigation.navigate("ListExercise", { classroomId });
     } catch (error) {
       console.error(error);
       pushAlert("danger", "No se pudo actualizar la clase.");

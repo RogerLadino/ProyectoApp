@@ -5,7 +5,7 @@ import { colors, spacing, borderRadius } from '../../constant/theme';
 const ClassroomCodeCard = ({ code }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Código</Text>
+      <Text style={styles.label}>Código:</Text>
       <Text style={styles.code}>{code}</Text>
     </View>
   );
@@ -16,21 +16,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     padding: spacing.md,
     borderRadius: borderRadius.md,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    gap: spacing.sm,
     marginBottom: spacing.sm,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.text,
     fontWeight: '600',
-    marginBottom: spacing.sm,
   },
   code: {
-    fontSize: 24,
+    fontSize: 16,
     color: colors.accent,
     fontWeight: 'bold',
-    letterSpacing: 2,
+    letterSpacing: 1,
   },
 });
 
