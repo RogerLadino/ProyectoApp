@@ -9,17 +9,17 @@ export const registerStyles = StyleSheet.create({
     padding: 20,
   },
 
-  // Contenedor principal (emula width: 60%)
+  // Contenedor principal
   container: {
     width: '100%',
-    maxWidth: 700, // ajusta según diseño
+    maxWidth: 700,
     alignSelf: 'center',
     padding: 20,
     borderRadius: 12,
     backgroundColor: '#2d2727',
   },
 
-  // Header con círculo y marca
+  // Header
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -31,7 +31,7 @@ export const registerStyles = StyleSheet.create({
     height: 28,
     backgroundColor: '#ff6e6e',
     borderRadius: 14,
-    marginRight: 10, // reemplaza gap
+    marginRight: 10,
   },
   brand: {
     fontSize: 13,
@@ -82,7 +82,7 @@ export const registerStyles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#fff',
-    marginRight: 6, // reemplaza gap
+    marginRight: 6,
   },
   labelText: {
     fontSize: 12,
@@ -101,6 +101,35 @@ export const registerStyles = StyleSheet.create({
     borderColor: '#ff6e6e',
   },
 
+  // Dropdown estilos
+  dropdown: {
+    backgroundColor: '#2d2727',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    height: 45,
+    borderWidth: 1,
+    borderColor: '#ff6e6e',
+  },
+  dropdownMenu: {
+    backgroundColor: '#2d2727',
+    borderColor: '#ff6e6e',
+    borderWidth: 1,
+    borderRadius: 6,
+  },
+  placeholderStyle: {
+    fontSize: 14,
+    color: '#aaa',
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: '#fff',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    tintColor: '#fff',
+  },
+
   // Filas y columnas
   row: {
     flexDirection: 'row',
@@ -109,7 +138,6 @@ export const registerStyles = StyleSheet.create({
   col: {
     flex: 1,
   },
-  // Separación entre columnas (reemplazo de gap)
   colLeft: {
     marginRight: 5,
   },
