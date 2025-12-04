@@ -1,12 +1,28 @@
 import { StyleSheet } from 'react-native';
 
 export const homePageStyles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#1f1a1a',
+  },
+  kav: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#1f1a1a',
+  },
   wrapper: {
     flex: 1,
     backgroundColor: '#1f1a1a',
     paddingHorizontal: 20,
     paddingTop: 60,
   },
+  scrollContent: {
+    paddingBottom: 20, // espacio para que el scroll no choque con el footer
+  },
+
+  // Topbar
   topbar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -44,6 +60,8 @@ export const homePageStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+
+  // Hero
   hero: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -76,13 +94,17 @@ export const homePageStyles = StyleSheet.create({
     textAlign: 'center',
   },
   bigCircle: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
     backgroundColor: '#f77f72',
+    alignSelf: 'center',
+    marginTop: 12,
   },
+
+  // Secciones
   advantages: {
-    paddingVertical: 40,
+    paddingVertical: 32,
   },
   sectionTitle: {
     color: '#fff',
@@ -111,7 +133,7 @@ export const homePageStyles = StyleSheet.create({
     textAlign: 'center',
   },
   section: {
-    paddingVertical: 32,
+    paddingVertical: 28,
   },
   image: {
     width: '100%',
@@ -119,20 +141,26 @@ export const homePageStyles = StyleSheet.create({
     resizeMode: 'contain',
     borderRadius: 5,
   },
+
+  // Footer al final
   footer: {
-    paddingVertical: 32,
+    paddingVertical: 20,
     alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#2a2424',
+    backgroundColor: '#1f1a1a',
   },
   footerText: {
     color: '#fff',
     fontSize: 18,
     marginBottom: 12,
+    textAlign: 'center',
   },
   registroBtn: {
     backgroundColor: '#f77f72',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 6,
   },
   registroBtnText: {
     color: '#fff',
