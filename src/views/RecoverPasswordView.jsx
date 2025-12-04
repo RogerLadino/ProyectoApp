@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { recoverPasswordStyles as styles } from '../Styles/RecoverPasswordStyles';
+import axios from 'axios';
+import { recoverPasswordStyles as styles } from '../Styles/RecoverPasswordStyles'; 
 
 const CODE_LENGTH = 6;
 
@@ -24,9 +25,11 @@ export default function RecoverPasswordView() {
     newCode[index] = value;
     setVerificationCode(newCode);
 
+    // Mover al siguiente input
     if (value && index < CODE_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
+    // Retroceder si se borra
     if (!value && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
@@ -37,13 +40,14 @@ export default function RecoverPasswordView() {
     setLoading(true);
 
     try {
-      // Simulación de envío de código
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setMessage({ type: 'success', text: 'Código enviado. Revisa tu correo.' });
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/recover/send-code`, { email });
+      setMessage({ type: 'success', text: response.data.message || 'Código enviado. Revisa tu correo.' });
       setStep('verifyCode');
       setTimeout(() => inputRefs.current[0]?.focus(), 100);
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Error al enviar código. Verifica el email.' });
+      console.error('Error al enviar código:', error);
+      const msg = error.response?.data?.message || 'Error al enviar código. Verifica el email.';
+      setMessage({ type: 'danger', text: msg });
     } finally {
       setLoading(false);
     }
@@ -59,12 +63,17 @@ export default function RecoverPasswordView() {
     setLoading(true);
 
     try {
-      // Simulación de verificación
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/recover/verify-code`, {
+        email,
+        code: fullCode
+      });
+
       setMessage({ type: 'success', text: 'Código verificado. Redirigiendo...' });
-      setTimeout(() => navigation.navigate('ResetPassword'), 2000);
+      navigation.navigate('ResetPassword', { token: response.data.resetToken });
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Código incorrecto o expirado.' });
+      console.error('Error al verificar código:', error);
+      const msg = error.response?.data?.message || 'Código incorrecto o expirado.';
+      setMessage({ type: 'danger', text: msg });
     } finally {
       setLoading(false);
     }
@@ -74,9 +83,9 @@ export default function RecoverPasswordView() {
     <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.container}>
         {/* Logo */}
-        <View style={styles.logo}>
+        <View style={styles.header}>
           <View style={styles.circle} />
-          <Text style={styles.logoText}>Nombre</Text>
+          <Text style={styles.brand}>Nombre</Text>
         </View>
 
         <Text style={styles.title}>Recuperar Contraseña</Text>
@@ -92,57 +101,46 @@ export default function RecoverPasswordView() {
         )}
 
         {/* Email */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="nombre@ejemplo.com"
-            placeholderTextColor="#aaa"
-            value={email}
-            onChangeText={setEmail}
-            editable={step === 'sendCode' && !loading}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={step === 'sendCode' && !loading}
+        />
 
         {/* Código */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Código de verificación</Text>
-          <View style={styles.codeInputs}>
-            {verificationCode.map((digit, index) => (
-              <TextInput
-                key={index}
-                style={styles.codeInput}
-                maxLength={1}
-                keyboardType="numeric"
-                value={digit}
-                onChangeText={value => handleCodeChange(value, index)}
-                ref={el => (inputRefs.current[index] = el)}
-                editable={step === 'verifyCode' && !loading}
-              />
-            ))}
-          </View>
+        <View style={styles.codeContainer}>
+          {verificationCode.map((digit, index) => (
+            <TextInput
+              key={index}
+              style={styles.codeInput}
+              maxLength={1}
+              keyboardType="numeric"
+              value={digit}
+              onChangeText={(val) => handleCodeChange(val, index)}
+              ref={(el) => (inputRefs.current[index] = el)}
+              editable={step === 'verifyCode' && !loading}
+            />
+          ))}
         </View>
 
-        {/* Botones */}
+        {/* Botón */}
         {step === 'sendCode' && (
           <Pressable style={styles.button} onPress={handleSendCode} disabled={loading || !email}>
-            {loading ? <ActivityIndicator size="small" color="#1f1a1a" /> : <Text style={styles.buttonText}>Enviar Código</Text>}
+            {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Enviar Código</Text>}
           </Pressable>
         )}
 
         {step === 'verifyCode' && (
-          <Pressable
-            style={[styles.button, styles.verifyButton]}
-            onPress={handleVerifyCode}
-            disabled={loading || fullCode.length !== CODE_LENGTH}
-          >
+          <Pressable style={styles.buttonSuccess} onPress={handleVerifyCode} disabled={loading || fullCode.length !== CODE_LENGTH}>
             {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Verificar Código</Text>}
           </Pressable>
         )}
 
-        {/* Reenviar */}
+        {/* Re-enviar */}
         {step === 'verifyCode' && !loading && (
           <Pressable
             style={styles.linkButton}
@@ -152,7 +150,7 @@ export default function RecoverPasswordView() {
               setVerificationCode(new Array(CODE_LENGTH).fill(''));
             }}
           >
-            <Text style={styles.linkText}>Cambiar Email o Re-enviar Código</Text>
+            <Text style={styles.footerLink}>Cambiar Email o Re-enviar Código</Text>
           </Pressable>
         )}
       </View>
