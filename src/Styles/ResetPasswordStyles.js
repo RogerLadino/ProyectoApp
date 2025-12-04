@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const resetPasswordStyles = StyleSheet.create({
-  // Fondo principal
   wrapper: {
     flexGrow: 1,
     backgroundColor: '#1e1919',
@@ -10,87 +9,109 @@ export const resetPasswordStyles = StyleSheet.create({
     padding: 20,
   },
 
-  // Contenedor central
   container: {
-    textAlign: 'center',
-    maxWidth: 400,
-    width: '90%',
+    width: '95%',
+    maxWidth: 420,
     padding: 20,
     alignSelf: 'center',
     backgroundColor: '#2d2727',
     borderRadius: 8,
   },
 
-  // Logo
   logo: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   circle: {
     backgroundColor: '#f47c7c',
     borderRadius: 15,
     width: 30,
     height: 30,
-    marginRight: 8, // reemplazo de gap
+    marginRight: 8,
   },
   logoText: {
     color: '#fff',
     fontSize: 14,
   },
 
-  // Título
   title: {
     fontSize: 22,
     fontWeight: '600',
     color: '#fff',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 13,
+    color: '#ddd',
+    textAlign: 'center',
+    marginBottom: 18,
   },
 
-  // Labels
+  inputGroup: {
+    marginBottom: 16,
+  },
   label: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  labelText: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#fff',
-    marginLeft: 5,
+    marginBottom: 6,
   },
-  circleEmpty: {
-    width: 12,
-    height: 12,
-    borderWidth: 2,
-    borderColor: '#fff',
-    borderRadius: 6,
-  },
-
-  // Inputs
   input: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     backgroundColor: '#2d2727',
-    borderRadius: 5,
+    borderRadius: 6,
     color: '#fff',
     fontSize: 14,
     borderWidth: 1,
-    borderColor: 'transparent',
-    marginBottom: 15,
+    borderColor: '#ff6e6e',
   },
 
-  // Botón
-  button: {
-    backgroundColor: '#2d2727',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+  // OTP inline: garantiza disposición horizontal sin depender de flex
+  otpInline: {
+    width: 270,            // ancho para 6 dígitos con espaciado
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 8,
+    textAlign: 'center',
+    fontSize: 20,
+    letterSpacing: 12,     // separa los dígitos horizontalmente
+    color: '#fff',
+    backgroundColor: '#1e1919',
+  },
+
+  alert: {
+    textAlign: 'center',
+    paddingVertical: 10,
     borderRadius: 6,
+    marginBottom: 16,
+    fontSize: 14,
+  },
+  alertSuccess: {
+    backgroundColor: '#4caf50',
+    color: '#fff',
+  },
+  alertDanger: {
+    backgroundColor: '#ff6e6e',
+    color: '#fff',
+  },
+  alertWarning: {
+    backgroundColor: '#ff9800',
+    color: '#fff',
+  },
+
+  button: {
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: '#1e1919',
     fontSize: 16,
     fontWeight: 'bold',
   },
