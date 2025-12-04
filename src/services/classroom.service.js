@@ -1,7 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const API_URL = "https://localhost:7206";
+import { API_URL } from '../constant/api.config';
 
 // Configurar timeout
 axios.defaults.timeout = 10000;
