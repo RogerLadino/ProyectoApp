@@ -1,88 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { resetPasswordStyles as styles } from '../Styles/ResetPasswordStyles';
 
-export default function ResetPasswordView() {
+export default function RecoverPasswordView() {
   const navigation = useNavigation();
-  const route = useRoute();
-
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  // Obtenemos el token desde la navegación
-  const resetToken = route.params?.token;
-
-  useEffect(() => {
-    if (!resetToken) {
-      setMessage({
-        type: 'warning',
-        text: 'Token de restablecimiento no encontrado. Inicia el proceso de recuperación de nuevo.',
-      });
-      setTimeout(() => navigation.navigate('RecoverPassword'), 3000);
-    }
-  }, [resetToken, navigation]);
-
-  const handleSubmit = async () => {
+  const handleSendCode = async () => {
     setMessage(null);
-
-    if (password !== confirmPassword) {
-      setMessage({ type: 'danger', text: 'Las contraseñas no coinciden.' });
+    if (!email) {
+      setMessage({ type: 'danger', text: 'Ingresa tu email.' });
       return;
     }
-
-    if (!resetToken) {
-      setMessage({ type: 'danger', text: 'Error de seguridad: Falta el token.' });
-      return;
-    }
-
     setLoading(true);
-
     try {
-      // Simulación de petición a la API
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      setMessage({
-        type: 'success',
-        text: 'Contraseña restablecida con éxito. Redirigiendo a iniciar sesión.',
-      });
-
-      setTimeout(() => navigation.navigate('Login'), 2000);
-    } catch (error) {
-      setMessage({
-        type: 'danger',
-        text: 'Hubo un error al intentar restablecer la contraseña.',
-      });
+      await new Promise(res => setTimeout(res, 1200));
+      setMessage({ type: 'success', text: 'Código enviado. Revisa tu correo.' });
+    } catch {
+      setMessage({ type: 'danger', text: 'No se pudo enviar el código. Intenta de nuevo.' });
     } finally {
       setLoading(false);
     }
   };
 
-  if (!resetToken) {
-    return (
-      <View style={styles.wrapper}>
-        <Text style={styles.warningTitle}>Verificando seguridad...</Text>
-        {message && (
-          <Text style={[styles.alert, styles.alertWarning]}>{message.text}</Text>
-        )}
-      </View>
-    );
-  }
+  const isComplete = code.length === 6;
 
   return (
     <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.container}>
-        {/* Logo */}
         <View style={styles.logo}>
           <View style={styles.circle} />
           <Text style={styles.logoText}>Nombre</Text>
         </View>
 
-        <Text style={styles.title}>Restablecer Contraseña</Text>
+        <Text style={styles.title}>Recuperar Contraseña</Text>
+        <Text style={styles.description}>
+          Se te enviará un código de 6 dígitos a tu correo. Ingresa este código para recuperar tu cuenta.
+        </Text>
 
-        {/* Mensajes */}
         {message && (
           <Text
             style={[
@@ -98,46 +57,48 @@ export default function ResetPasswordView() {
           </Text>
         )}
 
-        {/* Nueva contraseña */}
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Nueva Contraseña</Text>
+          <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            editable={!loading}
-            placeholder="••••••••"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="nombre@ejemplo.com"
+            placeholderTextColor="#aaa"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Código</Text>
+          <TextInput
+            style={styles.otpInline}
+            value={code}
+            onChangeText={(t) => setCode(t.replace(/[^0-9]/g, '').slice(0, 6))}
+            keyboardType="numeric"
+            maxLength={6}
+            placeholder="••••••"
             placeholderTextColor="#aaa"
           />
         </View>
 
-        {/* Confirmar contraseña */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Repetir Nueva Contraseña</Text>
-          <TextInput
-            style={styles.input}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            editable={!loading}
-            placeholder="••••••••"
-            placeholderTextColor="#aaa"
-          />
-        </View>
-
-        {/* Botón */}
-        <Pressable
-          style={styles.button}
-          onPress={handleSubmit}
-          disabled={loading || !password || password !== confirmPassword}
-        >
+        <Pressable style={styles.button} onPress={handleSendCode} disabled={loading}>
           {loading ? (
-            <ActivityIndicator size="small" color="#1f1a1a" />
+            <ActivityIndicator size="small" color="#1e1919" />
           ) : (
-            <Text style={styles.buttonText}>Restablecer Contraseña</Text>
+            <Text style={styles.buttonText}>Enviar Código</Text>
           )}
         </Pressable>
+
+        {isComplete && (
+          <Pressable
+            style={[styles.button, { marginTop: 10 }]}
+            onPress={() => navigation.navigate('ResetPassword', { token: code })}
+          >
+            <Text style={styles.buttonText}>Continuar</Text>
+          </Pressable>
+        )}
       </View>
     </ScrollView>
   );
