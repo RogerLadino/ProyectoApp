@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import * as signalR from '@microsoft/signalr';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import TopBar from '../../components/Navigation/TopBar';
 import Sidebar from '../../components/Navigation/Sidebar';
 import UserList from '../../components/Code/UserList';
@@ -20,7 +21,7 @@ const CodeView = () => {
   const [isProfessor, setIsProfessor] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const classroomId = 1; // Hardcoded for development
+  const { currentClassroomId } = useContext(ClassroomContext);
   const { currentExercise, currentExerciseId, fetchExerciseById } = useExercise();
   const { currentSubmission, currentUserId, setCurrentUserId, submissions, fetchSubmissions, fetchSubmissionByUserId } = useCode();
 
@@ -29,7 +30,9 @@ const CodeView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchExerciseById(classroomId, currentExerciseId);
+        if (currentClassroomId) {
+          await fetchExerciseById(currentClassroomId, currentExerciseId);
+        }
         if (isProfessor) {
           await fetchSubmissions(currentExerciseId);
         }

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import { getUserProfile } from '../../services/user.service';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
@@ -14,10 +15,8 @@ import { colors, spacing } from '../../constant/theme';
 
 const ExerciseStudentView = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { exerciseId } = route.params;
-  const classroomId = 1; // Hardcoded for development
-  const { currentExercise, loading: exerciseLoading, fetchExerciseById } = useExercise();
+  const { currentClassroomId } = useContext(ClassroomContext);
+  const { currentExercise, currentExerciseId, loading: exerciseLoading, fetchExerciseById } = useExercise();
   const { currentSubmission, loading: submissionLoading, fetchSubmissionById, setCurrentUserId } = useCode();
   const [loading, setLoading] = useState(true);
 
@@ -26,8 +25,12 @@ const ExerciseStudentView = () => {
       try {
         const userProfile = await getUserProfile();
         setCurrentUserId(userProfile.id);
-        await fetchExerciseById(classroomId, exerciseId);
-        await fetchSubmissionById(exerciseId);
+        if (currentClassroomId && currentExerciseId) {
+          await fetchExerciseById(currentClassroomId, currentExerciseId);
+        }
+        if (currentExerciseId) {
+          await fetchSubmissionById(currentExerciseId);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -36,11 +39,11 @@ const ExerciseStudentView = () => {
     };
 
     fetchData();
-  }, [classroomId, exerciseId]);
+  }, [currentClassroomId, currentExerciseId]);
 
   const handleVerCodigo = () => {
     navigation.navigate('Code', {
-      exerciseId,
+      exerciseId: currentExerciseId,
       userId: currentSubmission.appUserId,
     });
   };

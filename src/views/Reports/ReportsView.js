@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import { getClassroomSubmissions } from '../../services/reports.service';
 import BackHeader from '../../components/Navigation/BackHeader';
 import LoadingScreen from '../../components/Common/LoadingScreen';
@@ -8,15 +9,17 @@ import { colors, spacing, typography } from '../../constant/theme';
 
 const ReportsView = () => {
   const navigation = useNavigation();
-  const classroomId = 1; // Hardcoded for development
+  const { currentClassroomId } = useContext(ClassroomContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getClassroomSubmissions(classroomId);
-        setData(response);
+        if (currentClassroomId) {
+          const response = await getClassroomSubmissions(currentClassroomId);
+          setData(response);
+        }
       } catch (error) {
         console.error('Error fetching reports:', error);
       } finally {
@@ -24,7 +27,7 @@ const ReportsView = () => {
       }
     };
     fetchData();
-  }, [classroomId]);
+  }, [currentClassroomId]);
 
   if (loading) {
     return <LoadingScreen />;

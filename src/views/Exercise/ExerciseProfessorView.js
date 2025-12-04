@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
 import { useNotification } from '../../context/NotificationContext';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ProfessorHeader from '../../components/Layout/ProfessorHeader';
 import SubmissionTableHeader from '../../components/Exercise/SubmissionTableHeader';
@@ -14,9 +15,8 @@ import { colors, spacing } from '../../constant/theme';
 const ExerciseProfessorView = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { exerciseId } = route.params;
-  const classroomId = 1; // Hardcoded for development
-  const { currentExercise, loading: exerciseLoading, fetchExerciseById } = useExercise();
+  const { currentClassroomId } = useContext(ClassroomContext);
+  const { currentExercise, currentExerciseId, loading: exerciseLoading, fetchExerciseById } = useExercise();
   const { submissions, loading: submissionsLoading, fetchSubmissions, updateGrade, setCurrentUserId } = useCode();
   const { showWarning } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -25,8 +25,12 @@ const ExerciseProfessorView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchExerciseById(classroomId, exerciseId);
-        await fetchSubmissions(exerciseId);
+        if (currentClassroomId && currentExerciseId) {
+          await fetchExerciseById(currentClassroomId, currentExerciseId);
+        }
+        if (currentExerciseId) {
+          await fetchSubmissions(currentExerciseId);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -34,7 +38,7 @@ const ExerciseProfessorView = () => {
       }
     };
     fetchData();
-  }, [classroomId, exerciseId]);
+  }, [currentClassroomId, currentExerciseId]);
 
   useEffect(() => {
     setLocalSubmissions(submissions);

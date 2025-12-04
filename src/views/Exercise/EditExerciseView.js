@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import { useTestCases } from '../../hooks/useTestCases';
 import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
@@ -16,9 +17,8 @@ import ConfirmModal from '../../components/Modal/ConfirmModal';
 import { colors, spacing } from '../../constant/theme';
 
 const EditExerciseView = () => {
-  const { exerciseId } = useRoute().params;
-  const classroomId = 1; // Hardcoded for development
-  const { fetchExerciseById, updateCurrentExercise, removeExercise, loading } = useExercise();
+  const { currentClassroomId } = useContext(ClassroomContext);
+  const { currentExerciseId, fetchExerciseById, updateCurrentExercise, removeExercise, loading } = useExercise();
   const { showWarning } = useNotification();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -44,12 +44,14 @@ const EditExerciseView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const exercise = await fetchExerciseById(classroomId, exerciseId);
-        setNombre(exercise.name);
-        setDescripcion(exercise.description);
-        setFechaEntrega(exercise.dueDate);
-        const testCases = parseTestCases(exercise.testCases);
-        setPruebas(testCases);
+        if (currentClassroomId && currentExerciseId) {
+          const exercise = await fetchExerciseById(currentClassroomId, currentExerciseId);
+          setNombre(exercise.name);
+          setDescripcion(exercise.description);
+          setFechaEntrega(exercise.dueDate);
+          const testCases = parseTestCases(exercise.testCases);
+          setPruebas(testCases);
+        }
       } catch (error) {
         console.error('Error fetching exercise:', error);
       } finally {
@@ -58,7 +60,7 @@ const EditExerciseView = () => {
     };
 
     fetchData();
-  }, [classroomId, exerciseId]);
+  }, [currentClassroomId, currentExerciseId]);
 
   const handleSubmit = async () => {
     if (!nombre || !descripcion || !fechaEntrega) {
@@ -68,12 +70,12 @@ const EditExerciseView = () => {
 
     try {
       await updateCurrentExercise(
-        classroomId,
-        exerciseId,
+        currentClassroomId,
+        currentExerciseId,
         nombre,
         descripcion,
         fechaEntrega,
-        getParsedTestCases(parseInt(exerciseId))
+        getParsedTestCases(parseInt(currentExerciseId))
       );
       navigation.goBack();
     } catch (error) {
@@ -84,7 +86,7 @@ const EditExerciseView = () => {
   const handleDelete = async () => {
     setShowDeleteModal(false);
     try {
-      await removeExercise(classroomId, exerciseId);
+      await removeExercise(currentClassroomId, currentExerciseId);
       navigation.navigate('ListExercise');
     } catch (error) {
       console.error('Error deleting exercise:', error);

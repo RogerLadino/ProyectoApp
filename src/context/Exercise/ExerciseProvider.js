@@ -128,6 +128,7 @@ export const ExerciseProvider = ({ children }) => {
   const value = {
     currentExerciseId,
     currentExercise,
+    setCurrentExercise,
     exercises,
     loading,
     error,

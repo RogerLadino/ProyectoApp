@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import { useTestCases } from '../../hooks/useTestCases';
 import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
@@ -15,7 +16,7 @@ import DateTimeInput from '../../components/Input/DateTimeInput';
 import { colors, spacing } from '../../constant/theme';
 
 const CreateExerciseView = () => {
-  const classroomId = 1; // Hardcoded for development
+  const { currentClassroomId } = useContext(ClassroomContext);
   const { createNewExercise, loading } = useExercise();
   const { showWarning } = useNotification();
   const [nombre, setNombre] = useState('');
@@ -43,7 +44,7 @@ const CreateExerciseView = () => {
 
     try {
       await createNewExercise(
-        classroomId,
+        currentClassroomId,
         nombre,
         descripcion,
         fechaEntrega,

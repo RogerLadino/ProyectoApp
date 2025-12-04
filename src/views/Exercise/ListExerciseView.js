@@ -17,7 +17,7 @@ import ConfirmModal from '../../components/Modal/ConfirmModal';
 import { colors, spacing } from '../../constant/theme';
 
 const ListExerciseView = () => {
-  const { exercises, loading: exerciseLoading, fetchExercisesByClassroom } = useExercise();
+  const { exercises, loading: exerciseLoading, fetchExercisesByClassroom, setCurrentExerciseId, setCurrentExercise } = useExercise();
   const { currentClassroomId, currentClassroom, fetchClassrooms, pushAlert } = useContext(ClassroomContext);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -46,8 +46,10 @@ const ListExerciseView = () => {
 
   const isProfessor = user.appRoleId === 1;
 
-  const handleExercisePress = (exerciseId) => {
-    navigation.navigate('Exercise', { exerciseId });
+  const handleExercisePress = (exercise) => {
+    setCurrentExercise(exercise)
+    setCurrentExerciseId(exercise.id)
+    navigation.navigate('Exercise');
   };
 
   const handleCreateExercise = () => {
@@ -155,7 +157,7 @@ const ListExerciseView = () => {
               <ExerciseCard
                 key={exercise.id}
                 exercise={exercise}
-                onPress={() => handleExercisePress(exercise.id)}
+                onPress={() => handleExercisePress(exercise)}
               />
             ))
           )}
