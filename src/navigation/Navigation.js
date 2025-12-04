@@ -14,6 +14,7 @@ import EditExerciseView from '../views/Exercise/EditExerciseView';
 import ListExerciseView from '../views/Exercise/ListExerciseView';
 import CreateClassroomView from '../views/Classroom/CreateClassroomView';
 import EditClassroomView from '../views/Classroom/EditClassroomView';
+import ClassroomListView from '../views/Classroom/ClassroomListView';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,9 +42,9 @@ export default function Navigation() {
           /* Rutas de la aplicación */
           <>
             <Stack.Screen
-              name="Home"
-              component={HomeView}
-              options={{ title: 'Inicio' }}
+              name="ClassroomList"
+              component={ClassroomListView}
+              options={{ title: 'Mis Clases' }}
             />
             <Stack.Screen
               name="CreateClassroom"

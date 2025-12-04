@@ -7,6 +7,8 @@ export const ClassroomContext = createContext();
 export default function ClassroomProvider({ children }) {
   const [classrooms, setClassrooms] = useState([]);
   const [alerts, setAlerts] = useState([]);
+  const [currentClassroomId, setCurrentClassroomId] = useState(null);
+  const [currentClassroom, setCurrentClassroom] = useState(null);
 
   /** 🔔 Manejo de alertas */
   const pushAlert = useCallback((category, message, autoClose = 4000) => {
@@ -59,16 +61,26 @@ export default function ClassroomProvider({ children }) {
     );
   };
 
+  /** 🎯 Establecer el aula actual */
+  const selectClassroom = (classroom) => {
+    const id = classroom.id || classroom.idAula;
+    setCurrentClassroomId(id);
+    setCurrentClassroom(classroom);
+  };
+
   return (
     <ClassroomContext.Provider
       value={{
         classrooms,
         alerts,
+        currentClassroomId,
+        currentClassroom,
         pushAlert,
         fetchClassrooms,
         joinClassroom,
         addClassroom,
         updateClassroom,
+        selectClassroom,
       }}
     >
       {children}
