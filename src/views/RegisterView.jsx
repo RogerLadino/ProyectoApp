@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';   // ✅ corregido casing
+import { Dropdown } from 'react-native-element-dropdown';
 import { registerStyles as styles } from '../Styles/RegisterStyles';
 
 export default function RegisterView() {
   const navigation = useNavigation();
-  const { register } = useAuth(); // Llamar useAuth aquí, al nivel del componente
+  const { register } = useAuth();
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +21,11 @@ export default function RegisterView() {
     password: '',
   });
 
+  const items = [
+    { label: 'Profesor', value: '1' },
+    { label: 'Alumno', value: '2' },
+  ];
+
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -29,7 +35,6 @@ export default function RegisterView() {
     setMessage(null);
 
     try {
-      // Mapear los campos del formulario a lo que espera el backend
       const registroData = {
         primerNombre: formData.nombre1,
         segundoNombre: formData.nombre2 || '',
@@ -37,18 +42,15 @@ export default function RegisterView() {
         segundoApellido: formData.apellido2 || '',
         correoElectronico: formData.email,
         clave: formData.password,
-        rolId: parseInt(formData.rol) || 2 // 1=Profesor, 2=Alumno por defecto
+        rolId: parseInt(formData.rol) || 2,
       };
-      
-      console.log('Datos de registro:', registroData);
+
       await register(registroData);
-      
       setMessage({ type: 'success', text: '¡Registro exitoso! Serás redirigido al inicio de sesión.' });
       setTimeout(() => navigation.navigate('Login'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.detail || error.message || 'Ocurrió un error. Inténtalo de nuevo.';
       setMessage({ type: 'danger', text: errorMsg });
-      console.error('Error en registro:', error);
     } finally {
       setLoading(false);
     }
@@ -72,22 +74,30 @@ export default function RegisterView() {
           </Text>
         )}
 
-        {/* Rol */}
+        {/* Rol con Dropdown */}
         <View style={styles.inputGroup}>
           <View style={styles.label}>
             <View style={styles.dot} />
             <Text style={styles.labelText}>Rol</Text>
           </View>
-          <TextInput
-            style={styles.input}
+          <Dropdown
+            style={styles.dropdown}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            iconStyle={styles.iconStyle}
+            dropdownStyle={styles.dropdownMenu}
+            data={items}
+            search={false}
+            maxHeight={200}
+            labelField="label"
+            valueField="value"
             placeholder="Selecciona tu rol..."
-            placeholderTextColor="#aaa"
             value={formData.rol}
-            onChangeText={text => handleChange('rol', text)}
+            onChange={item => handleChange('rol', item.value)}
           />
         </View>
 
-        {/* Nombres */}
+        {/* Primer nombre */}
         <View style={styles.row}>
           <View style={[styles.col, styles.colLeft]}>
             <View style={styles.label}>
