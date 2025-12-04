@@ -16,13 +16,22 @@ export default function ClassroomListView() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await getUserProfile();
-      setUser(response);
+    const fetchData = async () => {
+      try {
+        const response = await getUserProfile();
+        setUser(response);
+        await fetchClassrooms();
+      } catch (error) {
+        console.error('Error al cargar datos:', error);
+        const errorMessage = error.response?.data?.message 
+          || error.response?.data?.detail 
+          || error.message 
+          || "Error al cargar la información.";
+        pushAlert("danger", errorMessage);
+      }
     };
 
-    fetchUser();
-    fetchClassrooms();
+    fetchData();
   }, []);
 
   const isTeacher = user.appRoleId === 1;

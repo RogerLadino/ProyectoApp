@@ -3,11 +3,13 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Animated } from '
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { ClassroomContext } from '../../context/ClassroomProvider';
+import { useAuth } from '../../context/AuthContext';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navigation = useNavigation();
   const { classrooms, selectClassroom, fetchClassrooms } = useContext(ClassroomContext);
+  const { logout } = useAuth();
   const slideAnim = React.useRef(new Animated.Value(-300)).current;
 
   useEffect(() => {
@@ -36,6 +38,19 @@ const Sidebar = ({ isOpen, onClose }) => {
     selectClassroom(aula);
     navigation.navigate('ListExercise', { classroomId: aula.id });
     onClose();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      onClose();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Auth' }],
+      });
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
   };
 
   if (!isOpen) return null;
@@ -96,7 +111,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* Logout */}
         <TouchableOpacity
           style={[styles.navItem, styles.logoutItem]}
-          onPress={() => handleNavigate('Login')}
+          onPress={handleLogout}
         >
           <Ionicons name="log-out-outline" size={22} color={colors.text} />
           <Text style={styles.navText}>Cerrar sesión</Text>

@@ -21,8 +21,12 @@ export default function EditClassroomView() {
         const classroom = await classroomService.getClassroomById(classroomId);
         setNombre(classroom.nombre || classroom.name || "");
       } catch (error) {
-        console.error(error);
-        pushAlert("danger", "No se pudo cargar la información de la clase.");
+        console.error('Error al cargar clase:', error);
+        const errorMessage = error.response?.data?.message 
+          || error.response?.data?.detail 
+          || error.message 
+          || "No se pudo cargar la información de la clase.";
+        pushAlert("danger", errorMessage);
       } finally {
         setLoading(false);
       }
@@ -43,8 +47,12 @@ export default function EditClassroomView() {
       await fetchClassrooms();
       navigation.navigate("ListExercise", { classroomId });
     } catch (error) {
-      console.error(error);
-      pushAlert("danger", "No se pudo actualizar la clase.");
+      console.error('Error al actualizar clase:', error);
+      const errorMessage = error.response?.data?.message 
+        || error.response?.data?.detail 
+        || error.message 
+        || "No se pudo actualizar la clase.";
+      pushAlert("danger", errorMessage);
     }
   };
 

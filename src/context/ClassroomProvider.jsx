@@ -32,7 +32,12 @@ export default function ClassroomProvider({ children }) {
       const data = await classroomService.getMyClassrooms();
       setClassrooms(data);
     } catch (err) {
-      pushAlert("danger", "Error cargando aulas.");
+      console.error('Error al cargar clases:', err);
+      const errorMessage = err.response?.data?.message 
+        || err.response?.data?.detail 
+        || err.message 
+        || "Error cargando aulas.";
+      pushAlert("danger", errorMessage);
     }
   };
 
@@ -44,7 +49,12 @@ export default function ClassroomProvider({ children }) {
       pushAlert("success", "Te uniste a la clase correctamente.");
       return aula;
     } catch (err) {
-      pushAlert("danger", err.message || "No se pudo unir a la clase.");
+      console.error('Error al unirse a la clase:', err);
+      const errorMessage = err.response?.data?.message 
+        || err.response?.data?.detail 
+        || err.message 
+        || "No se pudo unir a la clase.";
+      pushAlert("danger", errorMessage);
       throw err;
     }
   };

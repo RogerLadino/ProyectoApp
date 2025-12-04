@@ -12,16 +12,23 @@ export default function CreateClassroomView() {
   const { fetchClassrooms, pushAlert } = useContext(ClassroomContext);
 
   const handleSubmit = async () => {
-    if (!nombre.trim()) return;
+    if (!nombre.trim()) {
+      pushAlert("danger", "El nombre no puede estar vacío.");
+      return;
+    }
 
     try {
       await classroomService.createClassroom({ name: nombre.trim() });
       pushAlert("success", "Clase creada exitosamente.");
-      fetchClassrooms();
+      await fetchClassrooms();
       navigation.navigate("ClassroomList");
     } catch (error) {
-      console.error(error);
-      pushAlert("danger", "No se pudo crear la clase.");
+      console.error('Error al crear clase:', error);
+      const errorMessage = error.response?.data?.message 
+        || error.response?.data?.detail 
+        || error.message 
+        || "No se pudo crear la clase.";
+      pushAlert("danger", errorMessage);
     }
   };
 

@@ -76,8 +76,12 @@ const ListExerciseView = () => {
       setShowDeleteModal(false);
       navigation.navigate('ClassroomList');
     } catch (error) {
-      console.error('Error deleting classroom:', error);
-      pushAlert('danger', 'No se pudo eliminar la clase.');
+      console.error('Error al eliminar clase:', error);
+      const errorMessage = error.response?.data?.message 
+        || error.response?.data?.detail 
+        || error.message 
+        || 'No se pudo eliminar la clase.';
+      pushAlert('danger', errorMessage);
       setShowDeleteModal(false);
     }
   };

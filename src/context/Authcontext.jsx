@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as authService from '../services/auth.service';
 import { getUserProfile } from '../services/user.service';
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const { token, user: userData } = await authService.login(email, password);
       await AsyncStorage.setItem('token', token);
-      
+
       // Obtener el perfil completo del usuario después del login
       const profile = await getUserProfile();
       setUser(profile);
@@ -49,15 +49,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchIsAuthenticated = async () => {
+      try {
+        const profile = await getUserProfile();
+
+        let isObjectEmpty = Object.keys(profile).length == 0
+        if (!isObjectEmpty) {
+          setIsAuthenticated(true)
+          return;
+        }
+      } catch (e) {
+      }
+      setIsAuthenticated(false)
+    }
+
+    fetchIsAuthenticated()
+  }, [])
+
   return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        isAuthenticated, 
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
         loading,
-        login, 
-        logout, 
-        register 
+        login,
+        logout,
+        register
       }}
     >
       {children}
