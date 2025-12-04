@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { ClassroomContext } from "../../context/ClassroomProvider";
+import BackHeader from "../../components/Navigation/BackHeader";
 import * as classroomService from "../../services/classroom.service";
 import { CheckCircleIcon, XCircleIcon } from 'react-native-heroicons/solid';
 
@@ -40,7 +41,7 @@ export default function EditClassroomView() {
       await classroomService.updateClassroom(classroomId, { name: nombre.trim() });
       pushAlert("success", "Clase actualizada correctamente.");
       await fetchClassrooms();
-      navigation.navigate("ListClassroom");
+      navigation.navigate("ClassroomList");
     } catch (error) {
       console.error(error);
       pushAlert("danger", "No se pudo actualizar la clase.");
@@ -49,39 +50,44 @@ export default function EditClassroomView() {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F97E72" />
+      <View style={styles.wrapper}>
+        <BackHeader title="Editar Clase" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#F97E72" />
+        </View>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Editar Clase</Text>
+    <View style={styles.wrapper}>
+      <BackHeader title="Editar Clase" />
+      
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <Text style={styles.label}>Nombre de la clase</Text>
+          <TextInput
+            style={styles.input}
+            value={nombre}
+            onChangeText={setNombre}
+            placeholder="Ejemplo: Matemáticas"
+            placeholderTextColor="#888"
+          />
 
-      <View style={styles.card}>
-        <Text style={styles.label}>Nombre de la clase</Text>
-        <TextInput
-          style={styles.input}
-          value={nombre}
-          onChangeText={setNombre}
-          placeholder="Ejemplo: Matemáticas"
-          placeholderTextColor="#888"
-        />
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => navigation.goBack()}
+            >
+              <XCircleIcon size={20} color="#FBFBFB" />
+              <Text style={styles.cancelText}>Cancelar</Text>
+            </TouchableOpacity>
 
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => navigation.navigate("ListClassroom")}
-          >
-            <XCircleIcon size={20} color="#FBFBFB" />
-            <Text style={styles.cancelText}>Cancelar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
-            <CheckCircleIcon size={20} color="#FBFBFB" />
-            <Text style={styles.buttonText}>Guardar</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+              <CheckCircleIcon size={20} color="#FBFBFB" />
+              <Text style={styles.buttonText}>Guardar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -89,23 +95,19 @@ export default function EditClassroomView() {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#231F20"
+  },
   container: { 
     flex: 1, 
-    padding: 20, 
-    backgroundColor: "#231F20" 
+    padding: 20,
+    alignItems: "center"
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#231F20",
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: "bold", 
-    marginBottom: 24,
-    color: "#FBFBFB",
-    textAlign: "center"
   },
   card: {
     backgroundColor: "#363031",

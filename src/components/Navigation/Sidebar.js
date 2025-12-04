@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { getMyClassrooms } from '../../services/classroom.service';
+import { ClassroomContext } from '../../context/ClassroomProvider';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const [aulas, setAulas] = useState([]);
   const navigation = useNavigation();
+  const { classrooms, selectClassroom, fetchClassrooms } = useContext(ClassroomContext);
   const slideAnim = React.useRef(new Animated.Value(-300)).current;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const aulasData = await getMyClassrooms();
-        setAulas(aulasData);
-      } catch (error) {
-        console.error('Error fetching classrooms:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (isOpen) {
+      fetchClassrooms();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -36,6 +29,12 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const handleNavigate = (route, params = {}) => {
     navigation.navigate(route, params);
+    onClose();
+  };
+
+  const handleClassroomPress = (aula) => {
+    selectClassroom(aula);
+    navigation.navigate('ListExercise', { classroomId: aula.id });
     onClose();
   };
 
@@ -71,7 +70,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Home */}
           <TouchableOpacity
             style={styles.navItem}
-            onPress={() => handleNavigate('Classes')}
+            onPress={() => handleNavigate('ClassroomList')}
           >
             <Ionicons name="home" size={22} color={colors.text} />
             <Text style={styles.navText}>Inicio</Text>
@@ -80,11 +79,11 @@ const Sidebar = ({ isOpen, onClose }) => {
           <View style={styles.divisor} />
 
           {/* Classrooms */}
-          {aulas.map((aula) => (
+          {classrooms && classrooms.map((aula) => (
             <TouchableOpacity
               key={aula.id}
               style={styles.navItem}
-              onPress={() => handleNavigate('Classroom', { classroomId: aula.id })}
+              onPress={() => handleClassroomPress(aula)}
             >
               <View style={styles.classIcon}>
                 <View style={styles.emptySquare} />

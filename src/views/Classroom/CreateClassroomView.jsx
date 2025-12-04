@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ClassroomContext } from "../../context/ClassroomProvider";
+import BackHeader from "../../components/Navigation/BackHeader";
 import * as classroomService from "../../services/classroom.service.js";
 import { PlusCircleIcon, XCircleIcon } from 'react-native-heroicons/solid';
 
@@ -17,7 +18,7 @@ export default function CreateClassroomView() {
       await classroomService.createClassroom({ name: nombre.trim() });
       pushAlert("success", "Clase creada exitosamente.");
       fetchClassrooms();
-      navigation.navigate("Home");
+      navigation.navigate("ClassroomList");
     } catch (error) {
       console.error(error);
       pushAlert("danger", "No se pudo crear la clase.");
@@ -25,31 +26,33 @@ export default function CreateClassroomView() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Crear Clase</Text>
+    <View style={styles.wrapper}>
+      <BackHeader title="Crear Clase" />
+      
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <Text style={styles.label}>Nombre de la clase</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ejemplo: Matemáticas"
+            value={nombre}
+            onChangeText={setNombre}
+          />
 
-      <View style={styles.card}>
-        <Text style={styles.label}>Nombre de la clase</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ejemplo: Matemáticas"
-          value={nombre}
-          onChangeText={setNombre}
-        />
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.createButton} onPress={handleSubmit}>
+              <PlusCircleIcon size={20} color="#FBFBFB" />
+              <Text style={styles.buttonText}>Crear</Text>
+            </TouchableOpacity>
 
-        <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.createButton} onPress={handleSubmit}>
-            <PlusCircleIcon size={20} color="#FBFBFB" />
-            <Text style={styles.buttonText}>Crear</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <XCircleIcon size={20} color="#FBFBFB" />
-            <Text style={styles.cancelText}>Cancelar</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => navigation.goBack()}
+            >
+              <XCircleIcon size={20} color="#FBFBFB" />
+              <Text style={styles.cancelText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -57,17 +60,14 @@ export default function CreateClassroomView() {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#231F20"
+  },
   container: { 
     flex: 1, 
-    padding: 20, 
-    backgroundColor: "#231F20" 
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: "bold", 
-    marginBottom: 24,
-    color: "#FBFBFB",
-    textAlign: "center"
+    padding: 20,
+    alignItems: "center"
   },
   card: {
     backgroundColor: "#363031",

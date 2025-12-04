@@ -4,12 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import { ClassroomContext } from "../../context/ClassroomProvider";
 import ClassroomCard from "../../components/Classroom/ClassroomCard";
 import JoinClassForm from "../../components/Classroom/JoinClassForm";
+import TopBar from "../../components/Navigation/TopBar";
+import Sidebar from "../../components/Navigation/Sidebar";
 import { getUserProfile } from "../../services/user.service";
 import { AcademicCapIcon, PlusIcon, BookOpenIcon } from 'react-native-heroicons/solid';
 
 export default function ClassroomListView() {
   const { classrooms, fetchClassrooms } = useContext(ClassroomContext);
   const [user, setUser] = useState({});
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -25,31 +28,44 @@ export default function ClassroomListView() {
   const isTeacher = user.appRoleId === 1;
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Header: Botón Crear Clase solo para profesores */}
-      {isTeacher && (
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={() => navigation.navigate("CreateClassroom")}
-          >
-            <PlusIcon size={18} color="#FBFBFB" />
-            <Text style={styles.createText}>Crear Clase</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+    <View style={styles.wrapper}>
+      {/* TopBar */}
+      <TopBar
+        onMenuPress={() => setSidebarOpen(true)}
+        title="Mis Clases"
+      />
 
-      {/* Título */}
-      <View style={styles.titleContainer}>
-        {isTeacher ? (
-          <AcademicCapIcon size={24} color="#F97E72" />
-        ) : (
-          <BookOpenIcon size={24} color="#F97E72" />
-        )}
-        <Text style={styles.title}>
-          {isTeacher ? "Clases que dictas" : "Clases en las que estás inscrito"}
-        </Text>
-      </View>
+      {/* Sidebar */}
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      <ScrollView style={styles.container}>
+        {/* Título y Botón en la misma línea */}
+        <View style={styles.headerRow}>
+          <View style={styles.titleContainer}>
+            {isTeacher ? (
+              <AcademicCapIcon size={24} color="#F97E72" />
+            ) : (
+              <BookOpenIcon size={24} color="#F97E72" />
+            )}
+            <Text style={styles.title}>
+              {isTeacher ? "Clases que dictas" : "Clases en las que estás inscrito"}
+            </Text>
+          </View>
+
+          {/* Botón Crear Clase solo para profesores */}
+          {isTeacher && (
+            <TouchableOpacity
+              style={styles.createButton}
+              onPress={() => navigation.navigate("CreateClassroom")}
+            >
+              <PlusIcon size={18} color="#FBFBFB" />
+              <Text style={styles.createText}>Crear Clase</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
       {/* Formulario para unirse a clase solo para estudiantes */}
       {!isTeacher && <JoinClassForm />}
@@ -68,21 +84,36 @@ export default function ClassroomListView() {
             : "No estás inscrito en ninguna clase."}
         </Text>
       )}
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#231F20"
+  },
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#231F20"
   },
-  header: {
+  headerRow: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16
+    marginBottom: 16,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FBFBFB",
   },
   createButton: {
     backgroundColor: "#363031",
@@ -97,17 +128,6 @@ const styles = StyleSheet.create({
     color: "#FBFBFB",
     fontWeight: "bold",
     fontSize: 16
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#FBFBFB",
   },
   classesGrid: {
     flexDirection: "column",
