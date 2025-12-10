@@ -11,6 +11,10 @@ export default function ClassroomProvider({ children }) {
   const [currentClassroom, setCurrentClassroom] = useState(null);
 
   /** 🔔 Manejo de alertas */
+  const removeAlert = useCallback((alertId) => {
+    setAlerts((prev) => prev.filter((a) => a.id !== alertId));
+  }, []);
+
   const pushAlert = useCallback((category, message, autoClose = 4000) => {
     const id = Date.now().toString();
     const alertType = category === "success" ? "Éxito" : "Error";
@@ -20,11 +24,9 @@ export default function ClassroomProvider({ children }) {
     Alert.alert(alertType, message);
     
     if (autoClose) {
-      setTimeout(() => {
-        setAlerts((prev) => prev.filter((a) => a.id !== id));
-      }, autoClose);
+      setTimeout(() => removeAlert(id), autoClose);
     }
-  }, []);
+  }, [removeAlert]);
 
   /** 🌐 Carga inicial de aulas desde el backend */
   const fetchClassrooms = async () => {
