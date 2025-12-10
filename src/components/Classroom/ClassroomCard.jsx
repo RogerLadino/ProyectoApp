@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserIcon } from 'react-native-heroicons/solid';
+import PropTypes from 'prop-types';
 import { ClassroomContext } from "../../context/ClassroomProvider";
 
 export default function ClassroomCard({ aula }) {
@@ -54,3 +55,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+ClassroomCard.propTypes = {
+  aula: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    idAula: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    name: PropTypes.string.isRequired,
+    teacherName: PropTypes.string,
+  }).isRequired,
+};

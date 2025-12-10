@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const SubmissionStatusBadge = ({ isSubmitted }) => {
@@ -33,5 +34,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+SubmissionStatusBadge.propTypes = {
+  isSubmitted: PropTypes.bool.isRequired,
+};
 
 export default SubmissionStatusBadge;

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const tipos = ['int', 'string', 'float', 'boolean'];
@@ -99,5 +100,15 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
 });
+
+TestCaseParameter.propTypes = {
+  parameter: PropTypes.shape({
+    tipo: PropTypes.string,
+    valor: PropTypes.string,
+  }).isRequired,
+  onTypeChange: PropTypes.func.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
 export default TestCaseParameter;

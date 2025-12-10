@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 
 const Header = ({ title, showBack = false, rightButtons = [] }) => {
   const navigation = useNavigation();
@@ -67,5 +68,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 });
+
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
+  showBack: PropTypes.bool,
+  rightButtons: PropTypes.arrayOf(PropTypes.node),
+};
 
 export default Header;

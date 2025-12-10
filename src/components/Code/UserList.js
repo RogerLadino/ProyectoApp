@@ -1,5 +1,6 @@
 import { Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 const UserList = ({ submissions, currentUserId, onSelectUser }) => {
   return (
@@ -59,5 +60,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+UserList.propTypes = {
+  submissions: PropTypes.arrayOf(PropTypes.shape({
+    appUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    appUser: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
+  })).isRequired,
+  currentUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onSelectUser: PropTypes.func.isRequired,
+};
 
 export default UserList;

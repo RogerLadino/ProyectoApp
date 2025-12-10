@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const TopBar = ({ onMenuPress, title }) => {
@@ -60,5 +61,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+TopBar.propTypes = {
+  onMenuPress: PropTypes.func.isRequired,
+  title: PropTypes.string,
+};
 
 export default TopBar;

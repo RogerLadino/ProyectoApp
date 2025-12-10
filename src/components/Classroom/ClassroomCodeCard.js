@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ClassroomCodeCard = ({ code }) => {
@@ -34,5 +35,9 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
+
+ClassroomCodeCard.propTypes = {
+  code: PropTypes.string.isRequired,
+};
 
 export default ClassroomCodeCard;

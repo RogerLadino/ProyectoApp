@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const TabNavigator = ({ activeTab, onTabChange, tabs = ['ejercicio', 'consola'] }) => {
@@ -44,5 +45,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+TabNavigator.propTypes = {
+  activeTab: PropTypes.string.isRequired,
+  onTabChange: PropTypes.func.isRequired,
+  tabs: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default TabNavigator;

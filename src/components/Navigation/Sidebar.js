@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import { useAuth } from '../../context/AuthContext';
 import { colors, spacing, borderRadius } from '../../constant/theme';
@@ -191,5 +192,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
 });
+
+Sidebar.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default Sidebar;

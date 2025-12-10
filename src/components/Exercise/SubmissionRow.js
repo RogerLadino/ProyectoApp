@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const SubmissionRow = ({
@@ -149,5 +150,20 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
+SubmissionRow.propTypes = {
+  submission: PropTypes.shape({
+    appUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    status: PropTypes.number,
+    submittedAt: PropTypes.string,
+    grade: PropTypes.number,
+    appUser: PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  onGradeChange: PropTypes.func.isRequired,
+  onViewCode: PropTypes.func.isRequired,
+};
 
 export default SubmissionRow;

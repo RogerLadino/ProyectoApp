@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors } from '../../constant/theme';
 
 const ExerciseDescriptionTab = ({ description }) => {
@@ -21,5 +22,9 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
 });
+
+ExerciseDescriptionTab.propTypes = {
+  description: PropTypes.string.isRequired,
+};
 
 export default ExerciseDescriptionTab;

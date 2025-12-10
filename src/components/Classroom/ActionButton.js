@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ActionButton = ({ icon, label, onPress }) => {
@@ -28,5 +29,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+ActionButton.propTypes = {
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
 
 export default ActionButton;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors } from '../../constant/theme';
 
 const ExerciseHeader = ({ title, icon = 'ellipse-outline' }) => {
@@ -25,5 +26,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+ExerciseHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+};
 
 export default ExerciseHeader;

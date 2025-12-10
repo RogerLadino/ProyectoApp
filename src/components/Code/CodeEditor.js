@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import LanguageSelector from './LanguageSelector';
 
 const CodeEditor = ({ code, language, onCodeChange, onLanguageChange, onRunCode }) => {
@@ -68,5 +69,13 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
 });
+
+CodeEditor.propTypes = {
+  code: PropTypes.string.isRequired,
+  language: PropTypes.string.isRequired,
+  onCodeChange: PropTypes.func.isRequired,
+  onLanguageChange: PropTypes.func.isRequired,
+  onRunCode: PropTypes.func.isRequired,
+};
 
 export default CodeEditor;
