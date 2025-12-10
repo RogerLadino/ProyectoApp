@@ -59,7 +59,7 @@ const ExerciseProfessorView = () => {
       for (const submission of localSubmissions) {
         const grade = Number(submission.grade);
         if (grade && grade !== 0) {
-          await updateGrade(exerciseId, submission.appUserId, grade);
+          await updateGrade(currentExerciseId, submission.appUserId, grade);
         }
       }
     } catch (error) {
