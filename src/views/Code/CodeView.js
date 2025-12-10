@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import * as signalR from '@microsoft/signalr';
 import { useExercise } from '../../context/Exercise';
@@ -12,31 +12,63 @@ import SubmissionStats from '../../components/Code/SubmissionStats';
 import CodeEditor from '../../components/Code/CodeEditor';
 import TabSection from '../../components/Code/TabSection';
 import { API_URL } from '../../constant/api.config';
+import { getUserProfile } from '../../services/user.service';
 
 const CodeView = () => {
-  const [activeTab, setActiveTab] = useState('ejercicio');
-  const [language, setLanguage] = useState('python');
-  const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [isProfessor, setIsProfessor] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const { currentClassroomId } = useContext(ClassroomContext);
   const { currentExercise, currentExerciseId, fetchExerciseById } = useExercise();
   const { currentSubmission, currentUserId, setCurrentUserId, submissions, fetchSubmissions, fetchSubmissionByUserId } = useCode();
 
+  const [activeTab, setActiveTab] = useState('ejercicio');
+  const [language, setLanguage] = useState('python');
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isProfessor, setIsProfessor] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const connectionRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const user = await getUserProfile();
+
+        setIsProfessor(user.appRoleId == 1)
+        setCurrentUserId(user.id);
+
         if (currentClassroomId) {
           await fetchExerciseById(currentClassroomId, currentExerciseId);
         }
         if (isProfessor) {
           await fetchSubmissions(currentExerciseId);
         }
-        await fetchSubmissionByUserId(currentExerciseId, currentUserId);
+        if (currentUserId) {
+          await fetchSubmissionByUserId(currentExerciseId, currentUserId);
+        }
+
+        // Establecer conexión SignalR después de obtener el ejercicio y userId
+        if (currentExerciseId && currentUserId) {
+          const connection = new signalR.HubConnectionBuilder()
+            .withUrl(`${API_URL}/hubs/code`)
+            .withAutomaticReconnect()
+            .build();
+
+          connection
+            .start()
+            .then(async () => {
+              connection.on('CodeInitialized', (initialCode) => {
+                if (initialCode?.sourceCode) setCode(initialCode.sourceCode);
+              });
+
+              connection.on('CodeUpdated', (updatedCode) => {
+                if (updatedCode?.sourceCode) setCode(updatedCode.sourceCode);
+              });
+
+              await connection.invoke('JoinExerciseGroup', currentExerciseId, currentUserId);
+            })
+            .catch((err) => console.error('Error al conectar:', err));
+
+          connectionRef.current = connection;
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -45,37 +77,13 @@ const CodeView = () => {
     };
 
     fetchData();
-  }, [currentExerciseId, currentUserId, isProfessor]);
-
-  useEffect(() => {
-    if (currentExerciseId == null || currentUserId == null) return;
-
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${API_URL}/hubs/code`)
-      .withAutomaticReconnect()
-      .build();
-
-    connection
-      .start()
-      .then(async () => {
-        connection.on('CodeInitialized', (initialCode) => {
-          if (initialCode?.sourceCode) setCode(initialCode.sourceCode);
-        });
-
-        connection.on('CodeUpdated', (updatedCode) => {
-          if (updatedCode?.sourceCode) setCode(updatedCode.sourceCode);
-        });
-
-        await connection.invoke('JoinExerciseGroup', parseInt(currentExerciseId), parseInt(currentUserId));
-      })
-      .catch((err) => console.error('Error al conectar:', err));
-
-    connectionRef.current = connection;
 
     return () => {
-      connection.stop();
+      if (connectionRef.current) {
+        connectionRef.current.stop();
+      }
     };
-  }, [currentExerciseId, currentUserId]);
+  }, [currentExerciseId, isProfessor]);
 
   const handleCodeChange = (newValue) => {
     setCode(newValue);
@@ -126,7 +134,7 @@ const CodeView = () => {
       <ScrollView style={styles.content}>
         <View style={styles.studentInfo}>
           {isProfessor ? (
-            <UserList 
+            <UserList
               submissions={submissions}
               currentUserId={currentUserId}
               onSelectUser={handleSelectUser}
@@ -138,7 +146,7 @@ const CodeView = () => {
           {isProfessor && <SubmissionStats currentSubmission={currentSubmission} />}
         </View>
 
-        <CodeEditor 
+        <CodeEditor
           code={code}
           language={language}
           onCodeChange={handleCodeChange}
@@ -146,7 +154,7 @@ const CodeView = () => {
           onRunCode={handleRunCode}
         />
 
-        <TabSection 
+        <TabSection
           activeTab={activeTab}
           onTabChange={setActiveTab}
           exerciseDescription={currentExercise?.description}

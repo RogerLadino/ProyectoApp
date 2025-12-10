@@ -39,13 +39,10 @@ const ExerciseStudentView = () => {
     };
 
     fetchData();
-  }, [currentClassroomId, currentExerciseId]);
+  }, [currentExerciseId]);
 
   const handleVerCodigo = () => {
-    navigation.navigate('Code', {
-      exerciseId: currentExerciseId,
-      userId: currentSubmission.appUserId,
-    });
+    navigation.navigate('Code');
   };
 
   if (loading || exerciseLoading || submissionLoading) {
