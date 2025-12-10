@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const EmptyState = ({ icon = 'document-text-outline', message }) => {
@@ -24,5 +25,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
 });
+
+EmptyState.propTypes = {
+  icon: PropTypes.string,
+  message: PropTypes.string.isRequired,
+};
 
 export default EmptyState;

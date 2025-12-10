@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ExerciseCard = ({ 
@@ -56,5 +57,13 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
 });
+
+ExerciseCard.propTypes = {
+  exercise: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    dueDate: PropTypes.string,
+  }).isRequired,
+  onPress: PropTypes.func.isRequired,
+};
 
 export default ExerciseCard;

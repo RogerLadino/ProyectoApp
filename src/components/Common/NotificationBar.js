@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const NotificationBar = ({ notification, onDismiss }) => {
@@ -118,5 +119,14 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
 });
+
+NotificationBar.propTypes = {
+  notification: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    type: PropTypes.oneOf(['success', 'error', 'warning', 'info']).isRequired,
+    message: PropTypes.string.isRequired,
+  }).isRequired,
+  onDismiss: PropTypes.func.isRequired,
+};
 
 export default NotificationBar;

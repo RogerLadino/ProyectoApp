@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const BackHeader = ({ title, onBackPress }) => {
@@ -53,5 +54,10 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+BackHeader.propTypes = {
+  title: PropTypes.string,
+  onBackPress: PropTypes.func,
+};
 
 export default BackHeader;

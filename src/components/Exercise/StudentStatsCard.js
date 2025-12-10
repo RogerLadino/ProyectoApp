@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const StudentStatsCard = ({ grade, isResolved, isOnTime }) => {
@@ -82,5 +83,11 @@ const styles = StyleSheet.create({
     color: '#F97E72',
   },
 });
+
+StudentStatsCard.propTypes = {
+  grade: PropTypes.number,
+  isResolved: PropTypes.bool.isRequired,
+  isOnTime: PropTypes.bool.isRequired,
+};
 
 export default StudentStatsCard;

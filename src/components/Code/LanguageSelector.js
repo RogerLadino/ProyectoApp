@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import PropTypes from 'prop-types';
 
 const LanguageSelector = ({ language, onLanguageChange, onRunCode }) => {
   const languageOptions = [
@@ -54,5 +55,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#363031',
   },
 });
+
+LanguageSelector.propTypes = {
+  language: PropTypes.string.isRequired,
+  onLanguageChange: PropTypes.func.isRequired,
+  onRunCode: PropTypes.func.isRequired,
+};
 
 export default LanguageSelector;

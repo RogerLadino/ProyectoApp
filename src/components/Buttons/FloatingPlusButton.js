@@ -1,5 +1,5 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
+import PropTypes from 'prop-types';
 import { colors } from "../../constant/theme";
 import { Ionicons } from '@expo/vector-icons';
 
@@ -42,5 +42,9 @@ const styles = StyleSheet.create({
     width: 'auto'
   },
 });
+
+FloatingPlusButton.propTypes = {
+  onPress: PropTypes.func.isRequired,
+};
 
 export default FloatingPlusButton;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const SubmissionStats = ({ currentSubmission }) => {
@@ -100,5 +101,14 @@ const styles = StyleSheet.create({
     color: '#F97E72',
   },
 });
+
+SubmissionStats.propTypes = {
+  currentSubmission: PropTypes.shape({
+    status: PropTypes.number,
+    submittedAt: PropTypes.string,
+    grade: PropTypes.number,
+    attempts: PropTypes.number,
+  }),
+};
 
 export default SubmissionStats;

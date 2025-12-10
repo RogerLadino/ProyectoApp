@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const CodeProfessorStats = ({ 
@@ -93,5 +94,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+
+CodeProfessorStats.propTypes = {
+  isResolved: PropTypes.bool.isRequired,
+  attempts: PropTypes.number,
+  grade: PropTypes.number,
+  isOnTime: PropTypes.bool.isRequired,
+  onGradeChange: PropTypes.func.isRequired,
+};
 
 export default CodeProfessorStats;

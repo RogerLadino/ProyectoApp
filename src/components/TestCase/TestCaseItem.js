@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import PropTypes from 'prop-types';
 import TestCaseHeader from './TestCaseHeader';
 import TestCaseParameter from './TestCaseParameter';
 import { colors, spacing, borderRadius } from '../../constant/theme';
@@ -200,5 +201,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+TestCaseItem.propTypes = {
+  testCase: PropTypes.shape({
+    nombreFuncion: PropTypes.string.isRequired,
+    entrada: PropTypes.arrayOf(PropTypes.shape({
+      tipo: PropTypes.string,
+      valor: PropTypes.string,
+    })).isRequired,
+    salida: PropTypes.shape({
+      tipo: PropTypes.string,
+      valor: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onAddParameter: PropTypes.func.isRequired,
+  onDeleteParameter: PropTypes.func.isRequired,
+  onUpdateParameter: PropTypes.func.isRequired,
+  onUpdateOutput: PropTypes.func.isRequired,
+};
 
 export default TestCaseItem;

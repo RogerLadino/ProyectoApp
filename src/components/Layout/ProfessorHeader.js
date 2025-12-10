@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const ProfessorHeader = ({ title, onEdit, onSave }) => {
@@ -76,5 +77,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+ProfessorHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+};
 
 export default ProfessorHeader;

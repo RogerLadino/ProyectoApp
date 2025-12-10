@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ClassroomInfoCard = ({ className = "Nombre de la clase", teacherName = "Nombre del profesor" }) => {
@@ -32,5 +33,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+ClassroomInfoCard.propTypes = {
+  className: PropTypes.string,
+  teacherName: PropTypes.string,
+};
 
 export default ClassroomInfoCard;

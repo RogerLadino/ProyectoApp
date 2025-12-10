@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const ExerciseFormField = ({ 
@@ -66,5 +67,14 @@ const styles = StyleSheet.create({
     minHeight: 100,
   },
 });
+
+ExerciseFormField.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  multiline: PropTypes.bool,
+  inputStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+};
 
 export default ExerciseFormField;
