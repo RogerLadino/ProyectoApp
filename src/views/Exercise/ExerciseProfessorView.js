@@ -68,12 +68,12 @@ const ExerciseProfessorView = () => {
   };
 
   const handleEditExercise = () => {
-    console.log('hola')
     navigation.navigate('EditExercise');
   };
 
   const handleViewCode = (userId) => {
     setCurrentUserId(userId);
+    console.log(userId)
     navigation.navigate('Code');
   };
 

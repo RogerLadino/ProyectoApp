@@ -33,7 +33,8 @@ const CodeView = () => {
         const user = await getUserProfile();
 
         setIsProfessor(user.appRoleId == 1)
-        setCurrentUserId(user.id);
+        if(currentUserId == null)
+          setCurrentUserId(user.id);
 
         if (currentClassroomId) {
           await fetchExerciseById(currentClassroomId, currentExerciseId);
@@ -44,6 +45,8 @@ const CodeView = () => {
         if (currentUserId) {
           await fetchSubmissionByUserId(currentExerciseId, currentUserId);
         }
+
+        console.log(currentSubmission, currentUserId)
 
         // Establecer conexión SignalR después de obtener el ejercicio y userId
         if (currentExerciseId && currentUserId) {
@@ -83,7 +86,7 @@ const CodeView = () => {
         connectionRef.current.stop();
       }
     };
-  }, [currentExerciseId, isProfessor]);
+  }, [currentExerciseId, currentUserId]);
 
   const handleCodeChange = (newValue) => {
     setCode(newValue);
