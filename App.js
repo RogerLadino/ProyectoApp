@@ -1,7 +1,5 @@
 
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from './src/context/AuthContext';
 import Navigation from './src/navigation/Navigation';
 import { ExerciseProvider } from './src/context/Exercise';
