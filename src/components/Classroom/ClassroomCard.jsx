@@ -8,10 +8,8 @@ export default function ClassroomCard({ aula }) {
   const navigation = useNavigation();
   const { selectClassroom } = useContext(ClassroomContext);
   const id = aula.id || aula.idAula;
-  const nombre = aula.nombre || aula.name || "Sin nombre";
 
   const handleCardPress = () => {
-    console.log("hello")
     selectClassroom(aula);
     navigation.navigate("ListExercise", { classroomId: id });
   };
