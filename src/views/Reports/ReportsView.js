@@ -7,6 +7,52 @@ import BackHeader from '../../components/Navigation/BackHeader';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import { colors, spacing, typography } from '../../constant/theme';
 
+// Helper function to check submission status
+const isSubmissionDelivered = (gradeData) => {
+  return gradeData?.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997';
+};
+
+// Helper function to check if exercise is resolved
+const isExerciseResolved = (gradeData) => {
+  return gradeData?.status === 1;
+};
+
+// Component for rendering grade cell
+const GradeCell = ({ gradeData, isFirst, isLast }) => {
+  const isSubmitted = isSubmissionDelivered(gradeData);
+  const isResolved = isExerciseResolved(gradeData);
+
+  return (
+    <View style={styles.cellContent}>
+      <View style={[styles.subCell, isFirst && styles.subCellFirst, isLast && styles.subCellLast]}>
+        <Text style={styles.gradeText}>
+          {gradeData.grade}/100
+        </Text>
+      </View>
+      <View style={[
+        styles.subCell, 
+        isFirst && styles.subCellFirst, 
+        isLast && styles.subCellLast,
+        isSubmitted ? styles.subCellSuccess : styles.subCellError
+      ]}>
+        <Text style={[styles.statusText, isSubmitted ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isSubmitted ? 'Entregado' : 'No entregado'}
+        </Text>
+      </View>
+      <View style={[
+        styles.subCell, 
+        isFirst && styles.subCellFirst, 
+        isLast && styles.subCellLast,
+        isResolved ? styles.subCellSuccess : styles.subCellError
+      ]}>
+        <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
+          {isResolved ? 'Resuelto' : 'No resuelto'}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 const ReportsView = () => {
   const navigation = useNavigation();
   const { currentClassroomId } = useContext(ClassroomContext);
@@ -116,38 +162,11 @@ const ReportsView = () => {
                     const gradeData = getGradeForStudent(student.id, exercise.id);
                     const isFirst = index === 0;
                     const isLast = index === exercises.length - 1;
-                    const isSubmitted = gradeData?.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997';
-                    const isResolved = gradeData?.status === 1;
+                    
                     return (
                       <View key={`${student.id}-${exercise.id}`} style={styles.tableCell}>
                         {gradeData ? (
-                          <View style={styles.cellContent}>
-                            <View style={[styles.subCell, isFirst && styles.subCellFirst, isLast && styles.subCellLast]}>
-                              <Text style={styles.gradeText}>
-                                {gradeData.grade}/100
-                              </Text>
-                            </View>
-                            <View style={[
-                              styles.subCell, 
-                              isFirst && styles.subCellFirst, 
-                              isLast && styles.subCellLast,
-                              isSubmitted ? styles.subCellSuccess : styles.subCellError
-                            ]}>
-                              <Text style={[styles.statusText, isSubmitted ? styles.statusTextSuccess : styles.statusTextError]}>
-                                {isSubmitted ? 'Entregado' : 'No entregado'}
-                              </Text>
-                            </View>
-                            <View style={[
-                              styles.subCell, 
-                              isFirst && styles.subCellFirst, 
-                              isLast && styles.subCellLast,
-                              isResolved ? styles.subCellSuccess : styles.subCellError
-                            ]}>
-                              <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
-                                {isResolved ? 'Resuelto' : 'No resuelto'}
-                              </Text>
-                            </View>
-                          </View>
+                          <GradeCell gradeData={gradeData} isFirst={isFirst} isLast={isLast} />
                         ) : (
                           <Text style={styles.noDataText}>-</Text>
                         )}
