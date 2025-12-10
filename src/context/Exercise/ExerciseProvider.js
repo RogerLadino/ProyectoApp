@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { ExerciseContext } from './ExerciseContext';
 import { useNotification } from '../NotificationContext';
 import {
@@ -125,7 +125,7 @@ export const ExerciseProvider = ({ children }) => {
     setCurrentExerciseId(null);
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     currentExerciseId,
     currentExercise,
     setCurrentExercise,
@@ -139,7 +139,7 @@ export const ExerciseProvider = ({ children }) => {
     updateCurrentExercise,
     removeExercise,
     clearCurrentExercise,
-  };
+  }), [currentExercise, currentExerciseId, exercises]);
 
   return <ExerciseContext.Provider value={value}>{children}</ExerciseContext.Provider>;
 };

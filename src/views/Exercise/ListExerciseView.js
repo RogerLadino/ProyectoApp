@@ -29,9 +29,8 @@ const ListExerciseView = () => {
     const fetchData = async () => {
       try {
         const classroomId = currentClassroomId || currentClassroom?.id;
-        if (classroomId) {
-          await fetchExercisesByClassroom(classroomId);
-        }
+        await fetchExercisesByClassroom(classroomId);
+
         const fetchUser = await getUserProfile();
         setUser(fetchUser);
       } catch (error) {
@@ -77,9 +76,9 @@ const ListExerciseView = () => {
       navigation.navigate('ClassroomList');
     } catch (error) {
       console.error('Error al eliminar clase:', error);
-      const errorMessage = error.response?.data?.message 
-        || error.response?.data?.detail 
-        || error.message 
+      const errorMessage = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.message
         || 'No se pudo eliminar la clase.';
       pushAlert('danger', errorMessage);
       setShowDeleteModal(false);
@@ -108,14 +107,14 @@ const ListExerciseView = () => {
         {/* Información de clase (solo profesor) */}
         {isProfessor && (
           <View style={styles.classroomSection}>
-            <ClassroomInfoCard 
+            <ClassroomInfoCard
               className={currentClassroom?.name || 'Nombre de la clase'}
               teacherName={currentClassroom?.teacherName || 'Nombre del profesor'}
             />
-            
+
             {/* Código de clase */}
             <ClassroomCodeCard code={currentClassroom?.code || '------'} />
-            
+
             {/* Botones de gestión de clase */}
             <View style={styles.actionButtons}>
               <ActionButton

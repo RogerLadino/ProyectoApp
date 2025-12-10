@@ -14,7 +14,6 @@ import { colors, spacing } from '../../constant/theme';
 
 const ExerciseProfessorView = () => {
   const navigation = useNavigation();
-  const route = useRoute();
   const { currentClassroomId } = useContext(ClassroomContext);
   const { currentExercise, currentExerciseId, loading: exerciseLoading, fetchExerciseById } = useExercise();
   const { submissions, loading: submissionsLoading, fetchSubmissions, updateGrade, setCurrentUserId } = useCode();
