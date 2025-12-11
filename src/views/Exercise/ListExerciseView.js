@@ -17,7 +17,7 @@ import ConfirmModal from '../../components/Modal/ConfirmModal';
 import { colors, spacing } from '../../constant/theme';
 
 const ListExerciseView = () => {
-  const { exercises, loading: exerciseLoading, fetchExercisesByClassroom, setCurrentExerciseId, setCurrentExercise } = useExercise();
+  const { exercises, fetchExercisesByClassroom, setCurrentExerciseId, setCurrentExercise } = useExercise();
   const { currentClassroomId, currentClassroom, fetchClassrooms, pushAlert } = useContext(ClassroomContext);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
