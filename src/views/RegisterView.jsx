@@ -42,7 +42,7 @@ export default function RegisterView() {
         segundoApellido: formData.apellido2 || '',
         correoElectronico: formData.email,
         clave: formData.password,
-        rolId: parseInt(formData.rol) || 2,
+        rolId: Number.parseInt(formData.rol) || 2, // ✅ corregido según SonarQube S7773
       };
 
       await register(registroData);
