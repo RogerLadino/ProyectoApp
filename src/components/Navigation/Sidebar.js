@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <View style={styles.divisor} />
 
           {/* Classrooms */}
-          {classrooms && classrooms.map((aula) => (
+          {classrooms?.map((aula) => (
             <TouchableOpacity
               key={aula.id}
               style={styles.navItem}
