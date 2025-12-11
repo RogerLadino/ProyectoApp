@@ -33,7 +33,7 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
     if (!dateTimeString) return placeholder || 'Seleccionar fecha y hora';
     try {
       const date = new Date(dateTimeString);
-      if (isNaN(date.getTime())) return placeholder || 'Seleccionar fecha y hora';
+      if (Number.isNaN(date.getTime())) return placeholder || 'Seleccionar fecha y hora';
       
       const options = {
         year: 'numeric',
