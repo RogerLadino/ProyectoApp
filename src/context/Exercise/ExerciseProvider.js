@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { ExerciseContext } from './ExerciseContext';
 import { useNotification } from '../NotificationContext';
 import {
@@ -142,4 +143,8 @@ export const ExerciseProvider = ({ children }) => {
   };
 
   return <ExerciseContext.Provider value={value}>{children}</ExerciseContext.Provider>;
+};
+
+ExerciseProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
