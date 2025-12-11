@@ -1,6 +1,7 @@
-import React, { useState, useEffect, createContext, useCallback } from "react";
+import React, { useState, createContext, useCallback, useMemo } from "react";
 import * as classroomService from "../services/classroom.service";
 import { Alert } from "react-native";
+import PropTypes from "prop-types";
 
 export const ClassroomContext = createContext();
 
@@ -18,11 +19,11 @@ export default function ClassroomProvider({ children }) {
   const pushAlert = useCallback((category, message, autoClose = 4000) => {
     const id = Date.now().toString();
     const alertType = category === "success" ? "Éxito" : "Error";
-    
+
     setAlerts((prev) => [...prev, { id, category, message }]);
-    
+
     Alert.alert(alertType, message);
-    
+
     if (autoClose) {
       setTimeout(() => removeAlert(id), autoClose);
     }
@@ -80,22 +81,34 @@ export default function ClassroomProvider({ children }) {
     setCurrentClassroom(classroom);
   };
 
+  // ✅ CP49: Memoizar objeto value
+  const value = useMemo(() => ({
+    classrooms,
+    alerts,
+    currentClassroomId,
+    currentClassroom,
+    pushAlert,
+    fetchClassrooms,
+    joinClassroom,
+    addClassroom,
+    updateClassroom,
+    selectClassroom,
+  }), [
+    classrooms,
+    alerts,
+    currentClassroomId,
+    currentClassroom,
+    pushAlert,
+  ]);
+
   return (
-    <ClassroomContext.Provider
-      value={{
-        classrooms,
-        alerts,
-        currentClassroomId,
-        currentClassroom,
-        pushAlert,
-        fetchClassrooms,
-        joinClassroom,
-        addClassroom,
-        updateClassroom,
-        selectClassroom,
-      }}
-    >
+    <ClassroomContext.Provider value={value}>
       {children}
     </ClassroomContext.Provider>
   );
 }
+
+// ✅ CP48: Validación de children
+ClassroomProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
