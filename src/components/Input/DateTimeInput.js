@@ -13,7 +13,7 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
     if (!dateTimeString) return new Date();
     try {
       const date = new Date(dateTimeString);
-      return isNaN(date.getTime()) ? new Date() : date;
+      return Number.isNaN(date.getTime()) ? new Date() : date;
     } catch {
       return new Date();
     }
