@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useMemo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PropTypes from 'prop-types';
 import * as authService from '../services/auth.service';
 import { getUserProfile } from '../services/user.service';
 
@@ -13,9 +14,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const { token, user: userData } = await authService.login(email, password);
+      const { token } = await authService.login(email, password); // ✅ userData eliminado
       await AsyncStorage.setItem('token', token);
-      
+
       // Obtener el perfil completo del usuario después del login
       const profile = await getUserProfile();
       setUser(profile);
@@ -49,20 +50,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        isAuthenticated, 
-        loading,
-        login, 
-        logout, 
-        register 
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  // ✅ CP46: Memoizar objeto value
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated,
+      loading,
+      login,
+      logout,
+      register,
+    }),
+    [user, isAuthenticated, loading]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+// ✅ CP43: Validación de children
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useAuth = () => {
@@ -72,6 +78,5 @@ export const useAuth = () => {
   }
   return context;
 };
-
 
 export default AuthContext;
