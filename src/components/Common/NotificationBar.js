@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import { colors, spacing, borderRadius } from '../../constant/theme';
+import { colors, spacing } from '../../constant/theme';
 
 const NotificationBar = ({ notification, onDismiss }) => {
   const [fadeAnim] = React.useState(new Animated.Value(0));
