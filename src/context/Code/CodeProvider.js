@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { CodeContext } from './CodeContext';
 import { useNotification } from '../NotificationContext';
 import {
@@ -87,7 +87,7 @@ export const CodeProvider = ({ children }) => {
     setCurrentSubmission(null);
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     currentUserId,
     setCurrentUserId,
     currentSubmission,
@@ -99,7 +99,11 @@ export const CodeProvider = ({ children }) => {
     fetchSubmissions,
     updateGrade,
     clearCurrentSubmission,
-  };
+  }), [currentUserId, submissions, error, loading, currentSubmission]);
 
   return <CodeContext.Provider value={value}>{children}</CodeContext.Provider>;
+};
+
+CodeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
