@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { ClassroomContext } from '../../context/ClassroomProvider';
-import { getClassroomById, deleteClassroom } from '../../services/classroom.service';
+import { deleteClassroom } from '../../services/classroom.service';
 import { getUserProfile } from '../../services/user.service';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ExerciseCard from '../../components/Exercise/ExerciseCard';

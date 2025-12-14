@@ -1,13 +1,12 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import { useTestCases } from '../../hooks/useTestCases';
 import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
-import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
 import ExerciseFormField from '../../components/Exercise/ExerciseFormField';
 import TestCaseItem from '../../components/TestCase/TestCaseItem';
 import Button from '../../components/Common/Button';
@@ -63,7 +62,7 @@ const CreateExerciseView = () => {
   return (
     <View style={styles.container}>
       <BackHeader title="Crear Ejercicio" />
-      
+
       <ScrollView style={styles.content}>
 
         <View style={styles.form}>

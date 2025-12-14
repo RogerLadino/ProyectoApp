@@ -1,7 +1,5 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeView from '../views/HomeView';
 import { useAuth } from '../context/AuthContext';
 import AuthNavigator from './AuthNavigation';
 import ReportsView from '../views/Reports/ReportsView';
@@ -21,6 +19,8 @@ const Stack = createNativeStackNavigator();
 export default function Navigation() {
   const { isAuthenticated } = useAuth();
 
+  const isNotAuthenticated = !isAuthenticated
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -31,7 +31,7 @@ export default function Navigation() {
           },
         }}
       >
-        {!isAuthenticated ? (
+        {isNotAuthenticated ? (
           /* Rutas de autenticación */
           <Stack.Screen
             name="Auth"
