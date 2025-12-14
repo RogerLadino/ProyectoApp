@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Text, ScrollView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { colors } from '../../constant/theme';
 
