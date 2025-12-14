@@ -74,7 +74,7 @@ const EditExerciseView = () => {
         nombre,
         descripcion,
         fechaEntrega,
-        getParsedTestCases(parseInt(currentExerciseId))
+        getParsedTestCases(Number.parseInt(currentExerciseId))
       );
       navigation.goBack();
     } catch (error) {
