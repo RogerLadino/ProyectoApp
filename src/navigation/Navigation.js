@@ -13,6 +13,7 @@ import ListExerciseView from '../views/Exercise/ListExerciseView';
 import CreateClassroomView from '../views/Classroom/CreateClassroomView';
 import EditClassroomView from '../views/Classroom/EditClassroomView';
 import ClassroomListView from '../views/Classroom/ClassroomListView';
+import { SafeAreaFrameContext, SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 

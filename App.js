@@ -7,21 +7,26 @@ import { CodeProvider } from './src/context/Code';
 import { NotificationProvider } from './src/context/NotificationContext';
 import NotificationContainer from './src/components/Common/NotificationContainer';
 import ClassroomProvider from './src/context/ClassroomProvider';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
-    <NotificationProvider>
-      <ExerciseProvider>
-        <AuthProvider>
-          <CodeProvider>
-            <ClassroomProvider>
-              <Navigation />
-              <NotificationContainer />
-              <StatusBar style="auto" />
-            </ClassroomProvider>
-          </CodeProvider>
-        </AuthProvider>
-      </ExerciseProvider>
-    </NotificationProvider>
+    <SafeAreaProvider>
+      <NotificationProvider>
+        <ExerciseProvider>
+          <AuthProvider>
+            <CodeProvider>
+              <ClassroomProvider>
+                <SafeAreaView style={{flex: 1, backgroundColor: '#231F20'}}>
+                  <Navigation />
+                </SafeAreaView>
+                <NotificationContainer />
+                <StatusBar style="auto" />
+              </ClassroomProvider>
+            </CodeProvider>
+          </AuthProvider>
+        </ExerciseProvider>
+      </NotificationProvider>
+    </SafeAreaProvider>
   );
 }
