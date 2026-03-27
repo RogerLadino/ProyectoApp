@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ConfirmModal = ({ visible, onConfirm, onCancel, title, message }) => {
@@ -89,5 +90,13 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+ConfirmModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+};
 
 export default ConfirmModal;

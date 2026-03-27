@@ -22,7 +22,7 @@ export default function HomePageView() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View style={styles.container}>
-          {/* Scroll con todo el contenido */}
+          {/* Scroll con cada uno de el contenido */}
           <ScrollView
             style={styles.wrapper}
             contentContainerStyle={styles.scrollContent}

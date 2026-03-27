@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const CodeStudentInfo = ({ student }) => {
@@ -34,5 +35,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+CodeStudentInfo.propTypes = {
+  student: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+  }),
+};
 
 export default CodeStudentInfo;

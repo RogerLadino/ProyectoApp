@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 const StudentInfo = ({ currentSubmission }) => {
   return (
@@ -28,5 +29,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+StudentInfo.propTypes = {
+  currentSubmission: PropTypes.shape({
+    appUser: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
+  }),
+};
 
 export default StudentInfo;

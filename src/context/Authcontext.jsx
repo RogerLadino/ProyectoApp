@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useMemo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PropTypes from 'prop-types';
 import * as authService from '../services/auth.service';
 import { getUserProfile } from '../services/user.service';
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const { token, user: userData } = await authService.login(email, password);
+      const { token } = await authService.login(email, password); // ✅ userData eliminado
       await AsyncStorage.setItem('token', token);
 
       // Obtener el perfil completo del usuario después del login
@@ -49,38 +50,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchIsAuthenticated = async () => {
-      try {
-        const profile = await getUserProfile();
-
-        let isObjectEmpty = Object.keys(profile).length == 0
-        if (!isObjectEmpty) {
-          setIsAuthenticated(true)
-          return;
-        }
-      } catch (e) {
-      }
-      setIsAuthenticated(false)
-    }
-
-    fetchIsAuthenticated()
-  }, [])
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated,
-        loading,
-        login,
-        logout,
-        register
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  // ✅ CP46: Memoizar objeto value
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated,
+      loading,
+      login,
+      logout,
+      register,
+    }),
+    [user, isAuthenticated, loading]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+// ✅ CP43: Validación de children
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useAuth = () => {
@@ -90,6 +78,5 @@ export const useAuth = () => {
   }
   return context;
 };
-
 
 export default AuthContext;

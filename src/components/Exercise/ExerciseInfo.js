@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const ExerciseInfo = ({ dueDate, description }) => {
@@ -28,5 +29,10 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
 });
+
+ExerciseInfo.propTypes = {
+  dueDate: PropTypes.string,
+  description: PropTypes.string.isRequired,
+};
 
 export default ExerciseInfo;

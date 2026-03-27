@@ -1,14 +1,81 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import { getClassroomSubmissions } from '../../services/reports.service';
 import BackHeader from '../../components/Navigation/BackHeader';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import { colors, spacing, typography } from '../../constant/theme';
+import PropTypes from 'prop-types';
+
+// Helper: check submission status
+const isSubmissionDelivered = (gradeData) =>
+  gradeData?.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997';
+
+// Helper: check exercise resolved
+const isExerciseResolved = (gradeData) => gradeData?.status === 1;
+
+// Componente hijo extraído (CP42)
+const GradeCell = ({ gradeData, isFirst, isLast }) => {
+  const isSubmitted = isSubmissionDelivered(gradeData);
+  const isResolved = isExerciseResolved(gradeData);
+
+  return (
+    <View style={styles.cellContent}>
+      <View style={[styles.subCell, isFirst && styles.subCellFirst, isLast && styles.subCellLast]}>
+        <Text style={styles.gradeText}>{gradeData.grade}/100</Text>
+      </View>
+
+      <View
+        style={[
+          styles.subCell,
+          isFirst && styles.subCellFirst,
+          isLast && styles.subCellLast,
+          isSubmitted ? styles.subCellSuccess : styles.subCellError,
+        ]}
+      >
+        <Text
+          style={[
+            styles.statusText,
+            isSubmitted ? styles.statusTextSuccess : styles.statusTextError,
+          ]}
+        >
+          {isSubmitted ? 'Entregado' : 'No entregado'}
+        </Text>
+      </View>
+
+      <View
+        style={[
+          styles.subCell,
+          isFirst && styles.subCellFirst,
+          isLast && styles.subCellLast,
+          isResolved ? styles.subCellSuccess : styles.subCellError,
+        ]}
+      >
+        <Text
+          style={[
+            styles.statusText,
+            isResolved ? styles.statusTextSuccess : styles.statusTextError,
+          ]}
+        >
+          {isResolved ? 'Resuelto' : 'No resuelto'}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+// Validación de props (CP41)
+GradeCell.propTypes = {
+  gradeData: PropTypes.shape({
+    grade: PropTypes.number.isRequired,
+    status: PropTypes.number,
+    submittedAt: PropTypes.string,
+  }).isRequired,
+  isFirst: PropTypes.bool,
+  isLast: PropTypes.bool,
+};
 
 const ReportsView = () => {
-  const navigation = useNavigation();
   const { currentClassroomId } = useContext(ClassroomContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,16 +100,16 @@ const ReportsView = () => {
     return <LoadingScreen />;
   }
 
-  // Procesar datos para obtener ejercicios únicos y estudiantes
-  const exercises = data.map(item => ({
+  // Ejercicios
+  const exercises = data.map((item) => ({
     id: item.id,
     name: item.name,
   }));
 
-  // Obtener todos los estudiantes únicos
+  // Estudiantes únicos
   const studentsMap = new Map();
-  data.forEach(exercise => {
-    exercise.submissions?.forEach(submission => {
+  data.forEach((exercise) => {
+    exercise.submissions?.forEach((submission) => {
       if (submission.appUser) {
         const userId = submission.appUser.id;
         if (!studentsMap.has(userId)) {
@@ -55,15 +122,14 @@ const ReportsView = () => {
       }
     });
   });
-
   const students = Array.from(studentsMap.values());
 
-  // Crear matriz de calificaciones
+  // Nota de estudiante por ejercicio
   const getGradeForStudent = (studentId, exerciseId) => {
-    const exercise = data.find(ex => ex.id === exerciseId);
+    const exercise = data.find((ex) => ex.id === exerciseId);
     if (!exercise) return null;
-    
-    const submission = exercise.submissions?.find(sub => sub.appUserId === studentId);
+
+    const submission = exercise.submissions?.find((sub) => sub.appUserId === studentId);
     if (!submission) return null;
 
     return {
@@ -76,7 +142,7 @@ const ReportsView = () => {
   return (
     <View style={styles.container}>
       <BackHeader title="Reportes" />
-      
+
       <ScrollView horizontal style={styles.horizontalScroll}>
         <ScrollView style={styles.verticalScroll}>
           <View style={styles.content}>
@@ -86,14 +152,14 @@ const ReportsView = () => {
               <Text style={styles.headerTitle}>Estadísticas</Text>
             </View>
 
-            {/* Table */}
+            {/* Tabla */}
             <View style={styles.table}>
-              {/* Table Header */}
+              {/* Encabezado */}
               <View style={styles.tableRow}>
                 <View style={[styles.tableCell, styles.headerCell, styles.nameColumn]}>
                   <Text style={styles.headerText}>Nombre</Text>
                 </View>
-                {exercises.map(exercise => (
+                {exercises.map((exercise) => (
                   <View key={exercise.id} style={[styles.tableCell, styles.headerCell]}>
                     <View style={styles.exerciseDot} />
                     <Text style={styles.headerText} numberOfLines={2}>
@@ -103,8 +169,8 @@ const ReportsView = () => {
                 ))}
               </View>
 
-              {/* Table Rows */}
-              {students.map(student => (
+              {/* Filas */}
+              {students.map((student) => (
                 <View key={student.id} style={styles.tableRow}>
                   <View style={[styles.tableCell, styles.nameColumn]}>
                     <View style={styles.statusDot} />
@@ -112,42 +178,16 @@ const ReportsView = () => {
                       {student.name}
                     </Text>
                   </View>
+
                   {exercises.map((exercise, index) => {
                     const gradeData = getGradeForStudent(student.id, exercise.id);
                     const isFirst = index === 0;
                     const isLast = index === exercises.length - 1;
-                    const isSubmitted = gradeData?.submittedAt && gradeData.submittedAt !== '9999-12-31T23:59:59.997';
-                    const isResolved = gradeData?.status === 1;
+
                     return (
                       <View key={`${student.id}-${exercise.id}`} style={styles.tableCell}>
                         {gradeData ? (
-                          <View style={styles.cellContent}>
-                            <View style={[styles.subCell, isFirst && styles.subCellFirst, isLast && styles.subCellLast]}>
-                              <Text style={styles.gradeText}>
-                                {gradeData.grade}/100
-                              </Text>
-                            </View>
-                            <View style={[
-                              styles.subCell, 
-                              isFirst && styles.subCellFirst, 
-                              isLast && styles.subCellLast,
-                              isSubmitted ? styles.subCellSuccess : styles.subCellError
-                            ]}>
-                              <Text style={[styles.statusText, isSubmitted ? styles.statusTextSuccess : styles.statusTextError]}>
-                                {isSubmitted ? 'Entregado' : 'No entregado'}
-                              </Text>
-                            </View>
-                            <View style={[
-                              styles.subCell, 
-                              isFirst && styles.subCellFirst, 
-                              isLast && styles.subCellLast,
-                              isResolved ? styles.subCellSuccess : styles.subCellError
-                            ]}>
-                              <Text style={[styles.statusText, isResolved ? styles.statusTextSuccess : styles.statusTextError]}>
-                                {isResolved ? 'Resuelto' : 'No resuelto'}
-                              </Text>
-                            </View>
-                          </View>
+                          <GradeCell gradeData={gradeData} isFirst={isFirst} isLast={isLast} />
                         ) : (
                           <Text style={styles.noDataText}>-</Text>
                         )}

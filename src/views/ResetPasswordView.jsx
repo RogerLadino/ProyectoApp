@@ -29,6 +29,17 @@ export default function RecoverPasswordView() {
 
   const isComplete = code.length === 6;
 
+  // ✅ CP34 — Extraer ternaria anidada
+  let alertStyle;
+
+  if (message?.type === 'success') {
+  alertStyle = styles.alertSuccess;
+  } else if (message?.type === 'danger') {
+  alertStyle = styles.alertDanger;
+  } else {
+  alertStyle = styles.alertWarning;
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.container}>
@@ -43,16 +54,7 @@ export default function RecoverPasswordView() {
         </Text>
 
         {message && (
-          <Text
-            style={[
-              styles.alert,
-              message.type === 'success'
-                ? styles.alertSuccess
-                : message.type === 'danger'
-                ? styles.alertDanger
-                : styles.alertWarning,
-            ]}
-          >
+          <Text style={[styles.alert, alertStyle]}>
             {message.text}
           </Text>
         )}
@@ -75,7 +77,9 @@ export default function RecoverPasswordView() {
           <TextInput
             style={styles.otpInline}
             value={code}
-            onChangeText={(t) => setCode(t.replace(/[^0-9]/g, '').slice(0, 6))}
+            onChangeText={(t) =>
+              setCode(t.replaceAll(/\D/g, '').slice(0, 6)) // ✅ CP35 y CP36: replaceAll + \D
+            }
             keyboardType="numeric"
             maxLength={6}
             placeholder="••••••"

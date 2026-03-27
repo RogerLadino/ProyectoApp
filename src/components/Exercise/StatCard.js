@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 const StatCard = ({ label, value, icon, iconColor = '#F97E72' }) => {
   return (
@@ -48,5 +49,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+StatCard.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.node,
+  ]).isRequired,
+  icon: PropTypes.string,
+  iconColor: PropTypes.string,
+};
 
 export default StatCard;

@@ -14,6 +14,7 @@ export async function getExercisesByClassroom(classroomId) {
 
     return response.data;
   } catch (error) {
+    console.error("Error fetching exercises:", error);
     throw error;
   }
 }

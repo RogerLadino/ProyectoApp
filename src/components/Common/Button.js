@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
 
 const Button = ({
   title,
@@ -72,5 +73,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+Button.propTypes = {
+  title: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  variant: PropTypes.oneOf(['primary', 'secondary', 'card']),
+  loading: PropTypes.bool,
+  disabled: PropTypes.bool,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  textStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+};
 
 export default Button;

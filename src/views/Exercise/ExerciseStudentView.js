@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import { getUserProfile } from '../../services/user.service';
 import LoadingScreen from '../../components/Common/LoadingScreen';
-import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
 import ExerciseInfo from '../../components/Exercise/ExerciseInfo';
 import StudentStatsCard from '../../components/Exercise/StudentStatsCard';
 import Button from '../../components/Common/Button';
@@ -56,24 +55,24 @@ const ExerciseStudentView = () => {
     <>
       <BackHeader title={currentExercise?.name} />
       <ScrollView style={styles.container}>
-      
-      <ExerciseInfo 
-        dueDate={currentExercise?.dueDate} 
-        description={currentExercise?.description} 
-      />
 
-      <StudentStatsCard
-        grade={currentSubmission?.grade}
-        isResolved={isResolved}
-        isOnTime={isOnTime}
-      />
+        <ExerciseInfo
+          dueDate={currentExercise?.dueDate}
+          description={currentExercise?.description}
+        />
 
-      <Button 
-        title="Ver código" 
-        onPress={handleVerCodigo}
-        variant="primary"
-      />
-    </ScrollView>
+        <StudentStatsCard
+          grade={currentSubmission?.grade}
+          isResolved={isResolved}
+          isOnTime={isOnTime}
+        />
+
+        <Button
+          title="Ver código"
+          onPress={handleVerCodigo}
+          variant="primary"
+        />
+      </ScrollView>
     </>
   );
 };

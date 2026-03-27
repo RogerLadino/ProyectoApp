@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, spacing, borderRadius } from '../../constant/theme';
+import PropTypes from 'prop-types';
+import { colors, spacing } from '../../constant/theme';
 
 const DateTimeInput = ({ label, value, onChange, placeholder }) => {
   const [show, setShow] = useState(false);
@@ -12,7 +13,7 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
     if (!dateTimeString) return new Date();
     try {
       const date = new Date(dateTimeString);
-      return isNaN(date.getTime()) ? new Date() : date;
+      return Number.isNaN(date.getTime()) ? new Date() : date;
     } catch {
       return new Date();
     }
@@ -32,7 +33,7 @@ const DateTimeInput = ({ label, value, onChange, placeholder }) => {
     if (!dateTimeString) return placeholder || 'Seleccionar fecha y hora';
     try {
       const date = new Date(dateTimeString);
-      if (isNaN(date.getTime())) return placeholder || 'Seleccionar fecha y hora';
+      if (Number.isNaN(date.getTime())) return placeholder || 'Seleccionar fecha y hora';
       
       const options = {
         year: 'numeric',
@@ -171,5 +172,12 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
 });
+
+DateTimeInput.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+};
 
 export default DateTimeInput;

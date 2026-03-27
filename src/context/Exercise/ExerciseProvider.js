@@ -1,4 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
+<<<<<<< HEAD
+=======
+import PropTypes from 'prop-types';
+>>>>>>> fix/sonarqube-issues
 import { ExerciseContext } from './ExerciseContext';
 import { useNotification } from '../NotificationContext';
 import {
@@ -139,7 +143,15 @@ export const ExerciseProvider = ({ children }) => {
     updateCurrentExercise,
     removeExercise,
     clearCurrentExercise,
+<<<<<<< HEAD
   }), [currentExercise, currentExerciseId, exercises]);
+=======
+  }), [currentExercise, currentExerciseId, exercises, loading, error]);
+>>>>>>> fix/sonarqube-issues
 
   return <ExerciseContext.Provider value={value}>{children}</ExerciseContext.Provider>;
+};
+
+ExerciseProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

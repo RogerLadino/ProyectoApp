@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const CodeEditorPanel = ({ 
@@ -114,5 +115,13 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
 });
+
+CodeEditorPanel.propTypes = {
+  code: PropTypes.string.isRequired,
+  onCodeChange: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
+  onLanguageChange: PropTypes.func.isRequired,
+  onRun: PropTypes.func.isRequired,
+};
 
 export default CodeEditorPanel;

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import PropTypes from 'prop-types';
 import { borderRadius, colors, spacing } from "../../constant/theme";
 
 const ClassroomTitle = ({ name }) => {
@@ -29,5 +30,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+ClassroomTitle.propTypes = {
+  name: PropTypes.string.isRequired,
+};
 
 export default ClassroomTitle;

@@ -27,6 +27,28 @@ const CodeView = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const connectionRef = useRef(null);
 
+  // Handler para inicializar código
+  const handleCodeInitialized = (initialCode) => {
+    if (initialCode?.sourceCode) setCode(initialCode.sourceCode);
+  };
+
+  // Handler para actualizar código
+  const handleCodeUpdated = (updatedCode) => {
+    if (updatedCode?.sourceCode) setCode(updatedCode.sourceCode);
+  };
+
+  // Función para iniciar la conexión SignalR
+  const startSignalRConnection = async (connection) => {
+    try {
+      await connection.start();
+      connection.on('CodeInitialized', handleCodeInitialized);
+      connection.on('CodeUpdated', handleCodeUpdated);
+      await connection.invoke('JoinExerciseGroup', currentExerciseId, currentUserId);
+    } catch (err) {
+      console.error('Error al conectar:', err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,21 +77,7 @@ const CodeView = () => {
             .withAutomaticReconnect()
             .build();
 
-          connection
-            .start()
-            .then(async () => {
-              connection.on('CodeInitialized', (initialCode) => {
-                if (initialCode?.sourceCode) setCode(initialCode.sourceCode);
-              });
-
-              connection.on('CodeUpdated', (updatedCode) => {
-                if (updatedCode?.sourceCode) setCode(updatedCode.sourceCode);
-              });
-
-              await connection.invoke('JoinExerciseGroup', currentExerciseId, currentUserId);
-            })
-            .catch((err) => console.error('Error al conectar:', err));
-
+          await startSignalRConnection(connection);
           connectionRef.current = connection;
         }
       } catch (error) {

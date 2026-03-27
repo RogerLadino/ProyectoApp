@@ -1,7 +1,5 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeView from '../views/HomeView';
 import { useAuth } from '../context/AuthContext';
 import AuthNavigator from './AuthNavigation';
 import ReportsView from '../views/Reports/ReportsView';
@@ -15,11 +13,14 @@ import ListExerciseView from '../views/Exercise/ListExerciseView';
 import CreateClassroomView from '../views/Classroom/CreateClassroomView';
 import EditClassroomView from '../views/Classroom/EditClassroomView';
 import ClassroomListView from '../views/Classroom/ClassroomListView';
+import { SafeAreaFrameContext, SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const { isAuthenticated } = useAuth();
+
+  const isNotAuthenticated = !isAuthenticated
 
   return (
     <NavigationContainer>
@@ -31,7 +32,7 @@ export default function Navigation() {
           },
         }}
       >
-        {!isAuthenticated ? (
+        {isNotAuthenticated ? (
           /* Rutas de autenticación */
           <Stack.Screen
             name="Auth"

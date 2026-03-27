@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { useCode } from '../../context/Code';
-import { useNotification } from '../../context/NotificationContext';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import LoadingScreen from '../../components/Common/LoadingScreen';
 import ProfessorHeader from '../../components/Layout/ProfessorHeader';
@@ -17,7 +16,6 @@ const ExerciseProfessorView = () => {
   const { currentClassroomId } = useContext(ClassroomContext);
   const { currentExercise, currentExerciseId, loading: exerciseLoading, fetchExerciseById } = useExercise();
   const { submissions, loading: submissionsLoading, fetchSubmissions, updateGrade, setCurrentUserId } = useCode();
-  const { showWarning } = useNotification();
   const [loading, setLoading] = useState(true);
   const [localSubmissions, setLocalSubmissions] = useState([]);
 

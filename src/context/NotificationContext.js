@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
+import PropTypes from 'prop-types';
 
 const NotificationContext = createContext();
 
@@ -13,10 +20,14 @@ export const useNotification = () => {
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
+  const removeNotification = useCallback((id) => {
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+  }, []);
+
   const showNotification = useCallback((message, type = 'info', duration = 3000) => {
     const id = Date.now() + Math.random();
     const notification = { id, message, type, duration };
-    
+
     setNotifications((prev) => [...prev, notification]);
 
     if (duration > 0) {
@@ -24,11 +35,7 @@ export const NotificationProvider = ({ children }) => {
         removeNotification(id);
       }, duration);
     }
-  }, []);
-
-  const removeNotification = useCallback((id) => {
-    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-  }, []);
+  }, [removeNotification]);
 
   const showSuccess = useCallback((message, duration) => {
     showNotification(message, 'success', duration);
@@ -46,19 +53,33 @@ export const NotificationProvider = ({ children }) => {
     showNotification(message, 'info', duration);
   }, [showNotification]);
 
+  // ✅ CP51: Memoizar objeto value
+  const value = useMemo(() => ({
+    notifications,
+    showNotification,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    removeNotification,
+  }), [
+    notifications,
+    showNotification,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    removeNotification,
+  ]);
+
   return (
-    <NotificationContext.Provider
-      value={{
-        notifications,
-        showNotification,
-        showSuccess,
-        showError,
-        showWarning,
-        showInfo,
-        removeNotification,
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );
+};
+
+// ✅ CP50: Validación de children
+NotificationProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

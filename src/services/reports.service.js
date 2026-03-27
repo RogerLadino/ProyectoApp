@@ -14,6 +14,7 @@ export async function getClassroomSubmissions(classroomId) {
 
     return response.data;
   } catch (error) {
+    console.error("Error fetching reports:", error);
     throw error;
   }
 }

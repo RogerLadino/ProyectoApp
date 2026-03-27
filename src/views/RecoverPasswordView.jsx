@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { recoverPasswordStyles as styles } from '../Styles/RecoverPasswordStyles'; 
+import { recoverPasswordStyles as styles } from '../Styles/RecoverPasswordStyles';
 
 const CODE_LENGTH = 6;
 
@@ -12,24 +12,22 @@ export default function RecoverPasswordView() {
   const [verificationCode, setVerificationCode] = useState(new Array(CODE_LENGTH).fill(''));
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState('sendCode'); // 'sendCode' o 'verifyCode'
+  const [step, setStep] = useState('sendCode');
 
   const inputRefs = useRef([]);
 
   const fullCode = verificationCode.join('');
 
   const handleCodeChange = (value, index) => {
-    if (/[^0-9]/.test(value)) return; // Solo números
+    if (/\D/.test(value)) return; // ✅ CP37: Solo números usando \D
 
     const newCode = [...verificationCode];
     newCode[index] = value;
     setVerificationCode(newCode);
 
-    // Mover al siguiente input
     if (value && index < CODE_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
-    // Retroceder si se borra
     if (!value && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
@@ -115,7 +113,7 @@ export default function RecoverPasswordView() {
         <View style={styles.codeContainer}>
           {verificationCode.map((digit, index) => (
             <TextInput
-              key={index}
+              key={`code-${index}-${digit}`} // ✅ CP38: clave única
               style={styles.codeInput}
               maxLength={1}
               keyboardType="numeric"

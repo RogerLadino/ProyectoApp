@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 const TabSection = ({ activeTab, onTabChange, exerciseDescription, isProfessor }) => {
   return (
@@ -122,5 +123,12 @@ const styles = StyleSheet.create({
     color: '#FBFBFB',
   },
 });
+
+TabSection.propTypes = {
+  activeTab: PropTypes.string.isRequired,
+  onTabChange: PropTypes.func.isRequired,
+  exerciseDescription: PropTypes.string.isRequired,
+  isProfessor: PropTypes.bool,
+};
 
 export default TabSection;

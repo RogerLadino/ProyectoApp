@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing } from '../../constant/theme';
 
 const ProfessorHeader = ({ title, onEdit, onSave }) => {
@@ -8,7 +9,7 @@ const ProfessorHeader = ({ title, onEdit, onSave }) => {
     <View style={styles.header}>
       <View style={styles.headerLeft}>
         <Ionicons name="ellipse-outline" size={24} color={colors.accent} />
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{(title == '' || title == undefined) ? title : 'Ejercicio'}</Text>
       </View>
       <View style={styles.headerButtons}>
         <TouchableOpacity style={styles.cardButton} onPress={onEdit}>
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: spacing.md,
     gap: 10,
+    height: 75
   },
   headerLeft: {
     flexDirection: 'row',
@@ -76,5 +78,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+ProfessorHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+};
 
 export default ProfessorHeader;

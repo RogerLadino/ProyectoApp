@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useExercise } from '../../context/Exercise';
 import { ClassroomContext } from '../../context/ClassroomProvider';
 import { useTestCases } from '../../hooks/useTestCases';
 import { useNotification } from '../../context/NotificationContext';
 import LoadingScreen from '../../components/Common/LoadingScreen';
-import ExerciseHeader from '../../components/Exercise/ExerciseHeader';
 import ExerciseFormField from '../../components/Exercise/ExerciseFormField';
 import TestCaseItem from '../../components/TestCase/TestCaseItem';
 import Button from '../../components/Common/Button';
@@ -75,7 +74,7 @@ const EditExerciseView = () => {
         nombre,
         descripcion,
         fechaEntrega,
-        getParsedTestCases(parseInt(currentExerciseId))
+        getParsedTestCases(Number.parseInt(currentExerciseId))
       );
       navigation.goBack();
     } catch (error) {

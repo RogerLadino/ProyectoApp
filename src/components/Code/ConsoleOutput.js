@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 import { colors, spacing, borderRadius } from '../../constant/theme';
 
 const ConsoleOutput = ({ output, isResolved, isOnTime }) => {
@@ -57,5 +58,11 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+
+ConsoleOutput.propTypes = {
+  output: PropTypes.string.isRequired,
+  isResolved: PropTypes.bool.isRequired,
+  isOnTime: PropTypes.bool.isRequired,
+};
 
 export default ConsoleOutput;
